@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#15132b">
+  <title>Game Lab — Worlds in Progress</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to lesson</a>
+  <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <button class="brand" id="homeBtn" aria-label="Game Lab home">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span><small>MS. CJ • 6TH GRADE STEM</small><strong>GAME LAB</strong></span>
+    </button>
+    <div class="top-actions">
+      <div class="status-pill"><span class="status-dot"></span><span>IMAGINATION ONLINE</span></div>
+      <button id="teacherBtn">⌁ Teacher</button>
+      <button id="accessBtn">◐ Access</button>
+      <button id="presentBtn">⛶ Present</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="screen active" id="homeScreen" aria-labelledby="homeTitle">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">WORLD 00 // THE DOOR IS OPEN</p>
+          <h1 id="homeTitle">Your ideas are not waiting to be “good enough.”</h1>
+          <p class="hero-lede">They are waiting for you to test them. Build a rule. Break a rule. Fix what happens next. Then turn the whole thing into a story that moves.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" id="enterLabBtn">ENTER THE LAB <span>→</span></button>
+            <button class="secondary-btn" id="todayBtn">OPEN TODAY’S LESSON</button>
+          </div>
+          <div class="promise-row" aria-label="Game Lab promises">
+            <span>PLAY IT</span><span>CHANGE IT</span><span>EXPLAIN IT</span>
+          </div>
+        </div>
+        <div class="pixel-stage" aria-label="Pixel, your Game Lab guide">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="pixel-character" aria-hidden="true">
+            <span class="antenna"></span><span class="eye eye-left"></span><span class="eye eye-right"></span><span class="mouth"></span>
+          </div>
+          <div class="speech-bubble"><strong>PIXEL SAYS:</strong><br>Nothing here starts perfect. That is what makes it yours.</div>
+        </div>
+      </div>
+
+      <div class="world-preview" id="worldPreview"></div>
+    </section>
+
+    <section class="screen" id="mapScreen" aria-labelledby="mapTitle">
+      <div class="screen-heading">
+        <div><p class="eyebrow">CHOOSE A PORTAL</p><h2 id="mapTitle">The World Map</h2><p>Every stop adds a tool to your designer toolkit.</p></div>
+        <button class="secondary-btn" id="mapHomeBtn">← HOME</button>
+      </div>
+      <div class="world-tabs" id="worldTabs" role="tablist" aria-label="Unit worlds"></div>
+      <div class="day-grid" id="dayGrid"></div>
+    </section>
+
+    <section class="screen" id="lessonScreen" aria-labelledby="lessonTitle">
+      <div class="lesson-topline">
+        <button class="secondary-btn compact" id="backToMapBtn">← WORLD MAP</button>
+        <div class="lesson-identity"><span id="lessonDate"></span><strong id="lessonTopic"></strong></div>
+        <div class="lesson-tools"><button id="timerBtn">◷ 3:00</button><button id="resetGameBtn">↻ Reset Game</button></div>
+      </div>
+
+      <div class="progress-track" id="progressTrack" aria-label="Lesson sections"></div>
+
+      <article class="lesson-stage" id="lessonStage">
+        <div class="stage-decoration" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="section-label" id="sectionLabel"></div>
+        <h2 id="lessonTitle"></h2>
+        <div class="lesson-content" id="lessonContent"></div>
+        <div class="game-mount" id="gameMount" hidden></div>
+      </article>
+
+      <nav class="lesson-nav" aria-label="Lesson navigation">
+        <button id="prevSectionBtn">← BACK</button>
+        <div class="section-count" id="sectionCount"></div>
+        <button class="primary-btn" id="nextSectionBtn">NEXT →</button>
+      </nav>
+    </section>
+  </main>
+
+  <aside class="drawer" id="teacherDrawer" aria-labelledby="teacherTitle" aria-hidden="true">
+    <div class="drawer-head"><div><p class="eyebrow">FOR MS. CJ</p><h2 id="teacherTitle">Teacher Console</h2></div><button class="close-drawer" data-close="teacherDrawer" aria-label="Close teacher console">×</button></div>
+    <div id="teacherContent"></div>
+    <div class="shortcut-card"><h3>Keyboard shortcuts</h3><p><kbd>←</kbd>/<kbd>→</kbd> sections · <kbd>T</kbd> teacher · <kbd>A</kbd> access · <kbd>F</kbd> present · <kbd>R</kbd> reset game</p></div>
+  </aside>
+
+  <aside class="drawer" id="accessDrawer" aria-labelledby="accessTitle" aria-hidden="true">
+    <div class="drawer-head"><div><p class="eyebrow">MAKE IT WORK FOR YOU</p><h2 id="accessTitle">Access Controls</h2></div><button class="close-drawer" data-close="accessDrawer" aria-label="Close access controls">×</button></div>
+    <div class="access-grid">
+      <button class="toggle-control" data-setting="largeText" aria-pressed="false"><span>AA</span><strong>Large text</strong><small>Increase lesson text size</small></button>
+      <button class="toggle-control" data-setting="highContrast" aria-pressed="false"><span>◐</span><strong>High contrast</strong><small>Sharper colors and borders</small></button>
+      <button class="toggle-control" data-setting="reducedMotion" aria-pressed="false"><span>≈</span><strong>Reduced motion</strong><small>Stop decorative movement</small></button>
+      <button class="toggle-control" data-setting="sound" aria-pressed="true"><span>♪</span><strong>Sound</strong><small>Game feedback sounds</small></button>
+    </div>
+    <div class="access-note"><strong>Every example also works with a keyboard.</strong><p>Use Tab to reach controls and Enter or Space to activate them. Game instructions never rely on color alone.</p></div>
+  </aside>
+
+  <div class="drawer-scrim" id="drawerScrim" hidden></div>
+  <div class="timer-overlay" id="timerOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="timerTitle">
+    <div class="timer-card"><p class="eyebrow">FOCUS MODE</p><h2 id="timerTitle">Time to make something happen.</h2><div class="timer-display" id="timerDisplay">03:00</div><div class="timer-presets"><button data-minutes="1">1 MIN</button><button data-minutes="3">3 MIN</button><button data-minutes="5">5 MIN</button><button data-minutes="8">8 MIN</button></div><div class="timer-actions"><button id="timerStartBtn" class="primary-btn">START</button><button id="timerResetBtn">RESET</button><button id="timerCloseBtn">CLOSE</button></div></div>
+  </div>
+
+  <div class="live-region" id="liveRegion" aria-live="polite"></div>
+  <script src="lessons.js"></script>
+  <script src="games.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
