@@ -13,11 +13,11 @@
     "Repair a damaged rocket while dodging roaming bugs. Make the launch happen."
   ];
   const LENS = [
-    {topic:"GOAL • CHALLENGE • FEEDBACK",html:'<canvas aria-label="Playable world"></canvas>',css:'.portal { box-shadow: 0 0 30px cyan; }',js:'if (hero.touches(crystal)) { score++; showFeedback(); }'},
-    {topic:"RULES AND CONSTRAINTS",html:'<button>Choose your rule</button>',css:'.danger { animation: warning 1s infinite; }',js:'if (rule === "noDash" && dashing) return;'},
-    {topic:"EVENTS AND SEQUENCE",html:'<canvas aria-label="Temple puzzle"></canvas>',css:'.rune { filter: drop-shadow(0 0 12px gold); }',js:'if (rune.id === order[step]) { step++; openGate(); }'},
-    {topic:"INPUT AND FEEDBACK",html:'<button>FIRE SIGNAL</button>',css:'.pulse { transition: transform .2s; }',js:'if (pulse.hits(glitch)) { shield++; spawnParticles(); }'},
-    {topic:"PROTOTYPES AND DEBUGGING",html:'<canvas aria-label="Rocket hangar"></canvas>',css:'.rocket.ready { animation: launch 1s; }',js:'if (parts.every(part => part.fixed)) launchRocket();'}
+    {topic:"GOAL • CHALLENGE • FEEDBACK",html:'<canvas aria-label="Playable world"></canvas>',css:'.portal { box-shadow: 0 0 30px cyan; }',js:'if(!t.used&&rectHit(player,t)){t.used=true;score++;updateHud();}'},
+    {topic:"RULES AND CONSTRAINTS",html:'<button>Choose your rule</button>',css:'.danger { animation: warning 1s infinite; }',js:'if(rule==="dash"){player.x=clamp(player.x+Math.cos(angle)*82,22,778);}'},
+    {topic:"EVENTS AND SEQUENCE",html:'<canvas aria-label="Temple puzzle"></canvas>',css:'.rune { filter: drop-shadow(0 0 12px gold); }',js:'if(order[step]===i){t.used=true;step++;score=step;}'},
+    {topic:"INPUT AND FEEDBACK",html:'<button>FIRE SIGNAL</button>',css:'.pulse { transition: transform .2s; }',js:'if(Math.hypot(s.x-t.x,s.y-t.y)<26){score++;burst(s.x,s.y);}'},
+    {topic:"PROTOTYPES AND DEBUGGING",html:'<canvas aria-label="Rocket hangar"></canvas>',css:'.rocket.ready { animation: launch 1s; }',js:'if(score===4&&player.x>725)finish(true);'}
   ];
   const palettes = [
     ["#100e31","#29186e","#36fff0","#ffdf6c"],
@@ -98,7 +98,7 @@
     for(const button of mount.querySelectorAll("[data-action]")){
       const dir=button.dataset.action;
       if(dir==="fire"){button.addEventListener("click",action);continue;}
-      const down=e=>{e.preventDefault();touchDirection=dir;keys.add(dir);};
+      const down=e=>{e.preventDefault();touchDirection=dir;keys.add(dir);if(!paused&&!done){const moves={up:[0,-27],down:[0,27],left:[-27,0],right:[27,0]};const [mx,my]=moves[dir];player.x=clamp(player.x+mx,20,780);player.y=clamp(player.y+my,26,472);angle=Math.atan2(my,mx);}};
       const up=()=>{keys.delete(dir);if(touchDirection===dir)touchDirection=null;};
       button.addEventListener("pointerdown",down);button.addEventListener("pointerup",up);button.addEventListener("pointercancel",up);
       button.addEventListener("pointerleave",up);
