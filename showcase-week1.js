@@ -3,7 +3,7 @@
 (function () {
   "use strict";
   const original = window.GameLabGames;
-  const TITLES = ["Goal Hunt","Rules Remix","Sequence Sprint","Feedback Factory","Prototype Detective"];
+  const TITLES = ["Portal Panic","Rulebreaker Arena","Temple of the Missing Step","Signal Storm","Prototype Pit Crew"];
   const NAMES = ["PORTAL PANIC","RULEBREAKER ARENA","TEMPLE OF THE MISSING STEP","SIGNAL STORM","PROTOTYPE PIT CREW"];
   const SUBS = [
     "Dash through a neon maze. Gather three power crystals, then reach the portal.",
