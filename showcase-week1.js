@@ -37,10 +37,11 @@
     let player={x:76,y:265,r:15}, vx=0,vy=0,angle=0,phase=0,rule="dash";
     const keys=new Set(), objective=id===0?3:id===1?5:id===2?3:id===3?8:4;
     const things=[];
+    const checkpoints=id===1?[place(150,200),place(270,320),place(410,200),place(560,320),place(690,200)]:[];
     const random=(n)=>((Math.sin(n*78.233+id*30.1)*43758.5453)%1+1)%1;
     const place=(x,y,r=13)=>({x,y,r});
     if(id===0) things.push(place(230,145),place(415,360),place(650,145));
-    if(id===1) for(let i=0;i<10;i++)things.push({...place(165+i*61,110+(i%2)*280,15),type:"danger",seed:i});
+    if(id===1) for(let i=0;i<10;i++)things.push({...place(165+i*61,210+(i%2)*85,15),type:"danger",seed:i});
     if(id===2) things.push(place(180,130),place(420,390),place(630,155));
     if(id===3) for(let i=0;i<6;i++)things.push({x:110+i*135,y:40-(i%3)*100,r:19,type:"glitch",speed:30+i*5});
     if(id===4) things.push(place(190,135),place(375,400),place(575,160),place(680,410));
@@ -71,7 +72,7 @@
       score=0;lives=3;step=0;elapsed=0;done=false;paused=false;demo=false;toast="";toastTime=0;
       player={x:76,y:265,r:15};vx=vy=angle=phase=0;shots=[];sparks=[];overlay.hidden=true;keys.clear();
       if(id===0||id===2||id===4)things.forEach(t=>t.used=false);
-      if(id===1){rule="dash";things.forEach(t=>t.used=false);}
+      if(id===1){rule="dash";things.forEach(t=>t.used=false);checkpoints.forEach(t=>t.used=false);}
       if(id===3){things.length=0;for(let i=0;i<6;i++)things.push({x:100+i*135,y:30-(i%3)*105,r:19,type:"glitch",speed:30+i*5});}
       updateHud();message("New round! Use the arrows and the ACTION button.");canvas.focus({preventScroll:true});
     }
@@ -118,7 +119,7 @@
       if(demo){ // deterministic guided tour; students still see real mechanics
         let target;
         if(id===0||id===2||id===4){target=id===2?things[[1,0,2][step]]:things.find(t=>!t.used);if(!target)target={x:755,y:260};}
-        else if(id===1)target={x:760,y:260};
+        else if(id===1)target=checkpoints.find(t=>!t.used)||{x:760,y:260};
         else {target={x:120,y:430};if(cooldown<=0)action();}
         dx=Math.sign(target.x-player.x)*(Math.abs(target.x-player.x)>6);
         dy=Math.sign(target.y-player.y)*(Math.abs(target.y-player.y)>6);
@@ -138,8 +139,8 @@
           const ty=t.y+Math.cos(elapsed*1.2+t.seed)*35;
           if(Math.hypot(player.x-tx,player.y-ty)<27&&invuln<=0&&!demo){invuln=1.6;lose();}
         }
-        score=clamp(Math.floor(elapsed/4),0,5);updateHud();
-        if(elapsed>=20)finish(true);
+        for(const c of checkpoints)if(!c.used&&rectHit(player,c)){c.used=true;score++;updateHud();burst(c.x,c.y);api.sound("click");message("CHECKPOINT +1 • Your constraints make every move count.");}
+        if(score===5&&player.x>730&&elapsed>=5)finish(true);
       }else if(id===2){
         const order=[1,0,2];
         for(let i=0;i<things.length;i++){
@@ -183,6 +184,7 @@
       if(id===1){
         for(const t of things){const x=t.x+Math.sin(now*1.6+t.seed)*28,y=t.y+Math.cos(now*1.2+t.seed)*35;
           ctx.save();ctx.shadowColor="#ff586e";ctx.shadowBlur=12;ctx.fillStyle="#ff6e7c";ctx.fillRect(x-13,y-13,26,26);ctx.restore();}
+        for(const c of checkpoints){if(c.used)continue;ctx.save();ctx.shadowColor=gold;ctx.shadowBlur=14;ctx.fillStyle=gold;ctx.beginPath();ctx.arc(c.x,c.y,14,0,Math.PI*2);ctx.fill();ctx.restore();ctx.fillStyle=bg;ctx.fillText("★",c.x,c.y+5);}
         ctx.fillStyle="#fff";ctx.font="bold 20px sans-serif";ctx.fillText(rule==="dash"?"DASH ENABLED":"DASH DISABLED",405,64);
       }
       if(id===3){
@@ -196,7 +198,7 @@
       ctx.shadowBlur=0;ctx.fillStyle=bg;ctx.beginPath();ctx.arc(0,0,5,0,7);ctx.fill();ctx.restore();
       if(paused&&!done){ctx.fillStyle="#060717bb";ctx.fillRect(0,0,W,H);ctx.fillStyle="#fff";ctx.font="bold 48px sans-serif";ctx.fillText("PAUSED",400,250);}
       ctx.textAlign="left";ctx.fillStyle="#fff";ctx.font="bold 15px sans-serif";
-      if(id===1)ctx.fillText("SURVIVE 20 SECONDS • "+Math.max(0,Math.ceil(20-elapsed))+"s",30,46);
+      if(id===1)ctx.fillText("COLLECT 5 CHECKPOINTS • AVOID DRONES",30,46);
       if(id===2)ctx.fillText("RUNE ORDER: 1 → 2 → 3",30,46);
       if(id===3)ctx.fillText("MOVE UP / DOWN • FIRE TO DEFEND",30,46);
       if(id===4)ctx.fillText("FIND 4 PARTS • REACH LAUNCH GATE",30,46);
