@@ -20,6 +20,7 @@ const { chromium } = require('playwright');
     await page.locator('[data-restart]').click();
     await page.locator('#backToMapBtn').click();
   }
+  await page.locator('[data-tab="all"]').click();
   await page.locator('[data-day="5"]').click();
   await page.locator('[data-section="4"]').click();
   if(await page.locator('.showcase').count())throw Error('Day 6 unexpectedly replaced');
