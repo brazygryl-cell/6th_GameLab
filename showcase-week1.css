@@ -1,0 +1,35 @@
+/* Week 01 arcade presentation. Scoped to the game mount. */
+.showcase{color:#f9faff;background:#15152b;border:4px solid #25213d;border-radius:24px;padding:clamp(12px,2vw,26px);box-shadow:8px 8px 0 #211a44;max-width:100%;overflow:hidden}
+.showcase-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.showcase-chip{background:#ffdf70;color:#191329;border-radius:100px;padding:8px 12px;font-weight:1000;letter-spacing:.07em;font-size:.8rem}
+.showcase-hud{font-size:clamp(1rem,2vw,1.5rem);font-weight:900;font-variant-numeric:tabular-nums}
+.showcase h3{font-size:clamp(1.7rem,3vw,3rem);letter-spacing:-.04em;margin:10px 0 0;color:#fff;text-shadow:3px 3px #64439c}
+.showcase-sub{color:#d9e8ff;font-size:clamp(1rem,1.6vw,1.25rem);margin:5px 0 14px}
+.showcase-play{position:relative;background:#090e22;border:4px solid #90f6ff;border-radius:16px;overflow:hidden;box-shadow:0 0 20px #3ccaf555}
+.showcase-play canvas{display:block;width:100%;height:auto;aspect-ratio:8/5;touch-action:manipulation}
+.showcase-play canvas:focus-visible{outline:5px solid #ffe185;outline-offset:-7px}
+.showcase-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:12px}
+.showcase-actions,.showcase-tools{display:flex;gap:7px;flex-wrap:wrap}
+.showcase button{min-height:48px;border:2px solid #a4b8ff;border-radius:12px;background:#2e2e5a;color:white;font-weight:900;padding:9px 15px;box-shadow:0 3px 0 #121123}
+.showcase-actions button{min-width:60px;font-size:1.3rem;background:#3d3971}
+.showcase button[data-action="fire"]{background:#ffd967;color:#16152c;border-color:#ffe9ab}
+.showcase button:hover{filter:brightness(1.17);transform:translateY(-1px)}
+.showcase button:focus-visible{outline:4px solid #ffd967;outline-offset:3px}
+.showcase-message{margin-top:14px;background:#262448;color:#e5fdfb;border-left:6px solid #66eed6;border-radius:8px;padding:12px 15px;font-weight:750;min-height:54px}
+.showcase-overlay{position:absolute;inset:0;background:#0b1025e8;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:20px}
+.showcase-overlay[hidden],.showcase-lens[hidden]{display:none!important}
+.showcase-overlay strong{font-size:clamp(1.7rem,4vw,3.5rem);color:#ffe577;line-height:1.1}
+.showcase-overlay p{font-size:clamp(1rem,1.8vw,1.5rem);max-width:660px}
+.showcase-overlay button{background:#ffe577;color:#111}
+.showcase-lens{margin-top:16px;padding:20px;border-radius:16px;border:2px solid #9df8e3;background:#202442}
+.showcase-lens h4{margin:0;font-size:1.4rem;color:#ffe577}
+.showcase-lens pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#0d1428;border-radius:8px;padding:12px;color:#aefcd5;font-size:clamp(.85rem,1.25vw,1rem)}
+.showcase-lens strong{display:block;margin-top:12px;color:#ffe577}
+body.high-contrast .showcase{background:#000;color:#fff;border-color:#fff}
+body.high-contrast .showcase button{background:#fff;color:#000;border-color:#ffe700}
+body.high-contrast .showcase-message{background:#000;color:#fff;border:2px solid #fff}
+body.reduced-motion .showcase *{transition:none!important;animation:none!important}
+body.presentation .game-mount{width:100%}
+body.presentation .showcase h3{font-size:2.4rem}
+@media(max-width:760px){.showcase-actions{width:100%;justify-content:center}.showcase-tools{justify-content:center}.showcase-tools button{flex:1}.showcase-play canvas{min-height:240px}.showcase{padding:12px}}
+@media print{.showcase-tools,.showcase-actions,.showcase-play{display:none}}
