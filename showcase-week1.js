@@ -37,9 +37,9 @@
     let player={x:76,y:265,r:15}, vx=0,vy=0,angle=0,phase=0,rule="dash";
     const keys=new Set(), objective=id===0?3:id===1?5:id===2?3:id===3?8:4;
     const things=[];
-    const checkpoints=id===1?[place(150,200),place(270,320),place(410,200),place(560,320),place(690,200)]:[];
-    const random=(n)=>((Math.sin(n*78.233+id*30.1)*43758.5453)%1+1)%1;
+        const random=(n)=>((Math.sin(n*78.233+id*30.1)*43758.5453)%1+1)%1;
     const place=(x,y,r=13)=>({x,y,r});
+    const checkpoints=id===1?[place(150,200),place(270,320),place(410,200),place(560,320),place(690,200)]:[];
     if(id===0) things.push(place(230,145),place(415,360),place(650,145));
     if(id===1) for(let i=0;i<10;i++)things.push({...place(165+i*61,210+(i%2)*85,15),type:"danger",seed:i});
     if(id===2) things.push(place(180,130),place(420,390),place(630,155));
