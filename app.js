@@ -19,7 +19,7 @@
   }
   const gameApi={sound,celebrate,announce};
 
-  function showScreen(id){if(id!=='#lessonScreen')window.GameLabGames.reset();$('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:settings.reducedMotion?'auto':'smooth'});}
+  function showScreen(id){if(id!=='#lessonScreen')window.GameLabGames.reset();$$('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:settings.reducedMotion?'auto':'smooth'});}
   function applyWorld(id){const w=worldFor(id)||WORLDS[0];document.documentElement.style.setProperty('--world',w.color);document.documentElement.style.setProperty('--world-soft',w.soft);}
 
   function renderWorldPreview(){
