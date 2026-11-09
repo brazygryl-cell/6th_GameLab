@@ -117,7 +117,7 @@
       let dy=(keys.has("down")?1:0)-(keys.has("up")?1:0);
       if(demo){ // deterministic guided tour; students still see real mechanics
         let target;
-        if(id===0||id===2||id===4){target=things.find(t=>!t.used);if(!target)target={x:755,y:260};}
+        if(id===0||id===2||id===4){target=id===2?things[[1,0,2][step]]:things.find(t=>!t.used);if(!target)target={x:755,y:260};}
         else if(id===1)target={x:760,y:260};
         else {target={x:120,y:430};if(cooldown<=0)action();}
         dx=Math.sign(target.x-player.x)*(Math.abs(target.x-player.x)>6);
