@@ -93,7 +93,7 @@
     function release(e){let direction={arrowup:"up",w:"up",arrowdown:"down",s:"down",arrowleft:"left",a:"left",arrowright:"right",d:"right"}[e.key.toLowerCase()];if(direction){keys.delete(direction);e.preventDefault();}}
     // Capture only while this game has focus. Do not hijack lesson navigation elsewhere.
     function keyDown(e){if(!alive||!mount.isConnected||!mount.contains(document.activeElement))return;interact(e);}
-    function keyUp(e){release(e);}
+    function keyUp(e){if(!alive)return;if(!mount.contains(document.activeElement)){keys.clear();return;}release(e);}
     document.addEventListener("keydown",keyDown,true);document.addEventListener("keyup",keyUp,true);
     function toggleLens(){lens.hidden=!lens.hidden;if(!lens.hidden)lens.scrollIntoView({block:"nearest",behavior:"instant"});}
     for(const button of mount.querySelectorAll("[data-action]")){
