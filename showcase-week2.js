@@ -2,7 +2,7 @@
 (function(){
 "use strict";
 const previous=window.GameLabGames;
-const titles=["Coordinate Catch","Event Relay","Loop Lagoon","If/Then Dungeon","Score Keeper"];
+const titles=["Coordinate Comet","Event Relay: Skyline","Loop Lagoon: Robo Regatta","If/Then Dungeon","Variable Vault"];
 const display=["COORDINATE COMET","EVENT RELAY: SKYLINE","LOOP LAGOON: ROBO REGATTA","IF/THEN DUNGEON","VARIABLE VAULT"];
 const descriptions=[
  "Navigate a glowing coordinate grid. Predict x and y, then fly to three beacons without touching hazards.",
@@ -76,7 +76,7 @@ function make(game,mount,api,id){
  function action(){
   if(paused||won)return;
   if(id===1){
-    if(state.jump<=0){state.vy=-530;state.jump=.001;state.attempts++;say("EVENT: Jump button pressed! The event handler applied upward velocity.");api.sound("click");}
+    if(state.jump<=0){state.vy=530;state.jump=.001;state.attempts++;say("EVENT: Jump button pressed! The event handler applied upward velocity.");api.sound("click");}
     if(state.switch&&!state.broadcast){state.broadcast=true;state.towers=2;say("BROADCAST POWER_ON: Both towers woke up from one event!");api.sound("success");}
   }else if(id===2){if(!state.running){runLoop(state.count||4);}}
   else if(id===0) say("Follow the current target coordinate. Use one x or y change at a time.");
@@ -98,7 +98,7 @@ function make(game,mount,api,id){
  function update(dt){
    tick+=dt;
    if(id===1){
-    if(state.jump>0||state.vy!==0){state.jump+=state.vy*dt;state.vy+=1200*dt;if(state.jump<0){state.jump=0;state.vy=0;}}
+    if(state.jump>0||state.vy!==0){state.jump+=state.vy*dt;state.vy-=1200*dt;if(state.jump<0){state.jump=0;state.vy=0;}}
     if(state.x>state.obstacle-35&&state.x<state.obstacle+25&&state.jump<45&&!state.switch){state.x=95;state.attempts++;say("Laser collision! An event handler reset your sprite. Jump to avoid it.");api.sound("error");}
     if(state.x>490&&!state.switch)shootEvent();
     if(state.switch&&state.broadcast&&state.x>700)finish(true,"An event powered the switch. Its broadcast woke both towers. Your inputs drove the result!");
