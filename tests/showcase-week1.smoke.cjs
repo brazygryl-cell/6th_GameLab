@@ -37,7 +37,7 @@ const { chromium } = require('playwright');
   await page.locator('[data-tab="all"]').click();
   await page.locator('[data-day="5"]').click();
   await page.locator('[data-section="4"]').click();
-  if(await page.locator('.showcase').count())throw Error('Day 6 unexpectedly replaced');
+  if(!(await page.locator('.code-caverns').count()))throw Error('Day 6 new Code Caverns game missing');
   await page.locator('#timerBtn').click();
   await page.locator('#timerCloseBtn').click();
   if(await page.locator('#timerOverlay').isVisible())throw Error('Timer failed to close');
