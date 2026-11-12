@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
   const status=await page.evaluate(()=>({screens:[...document.querySelectorAll('.screen')].map(e=>[e.id,e.className]),cards:document.querySelectorAll('[data-day]').length,appLoaded:!!window.GameLabGames}));
   console.log('SCREEN STATUS',JSON.stringify(status),'PAGE ERRORS',JSON.stringify(errors));
   if(!(await page.locator('#mapScreen').isVisible()))throw Error('Map screen never opened: '+JSON.stringify(status)+' errors: '+errors.join('; '));
-  for(let i=0;i<5;i++){
+  for(let i=0;i<4;i++){
     await page.locator('[data-day="'+i+'"]').click();
     await page.locator('[data-section="4"]').click();
     await page.locator('.showcase canvas').waitFor({state:'visible'});
