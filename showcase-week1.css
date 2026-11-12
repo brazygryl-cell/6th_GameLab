@@ -33,3 +33,12 @@ body.presentation .game-mount{width:100%}
 body.presentation .showcase h3{font-size:2.4rem}
 @media(max-width:760px){.showcase-actions{width:100%;justify-content:center}.showcase-tools{justify-content:center}.showcase-tools button{flex:1}.showcase-play canvas{min-height:240px}.showcase{padding:12px}}
 @media print{.showcase-tools,.showcase-actions,.showcase-play{display:none}}
+
+/* Friday prototype lesson */
+.prototype-report{margin-top:14px;border-left:6px solid #77f7da;background:#222849;color:#f9fdff;border-radius:13px;padding:18px 20px;font-size:clamp(1rem,1.5vw,1.2rem)}
+.prototype-report>strong{color:#ffe17f;letter-spacing:.06em}
+.prototype-choices{display:grid;gap:10px;margin-top:14px}
+.prototype-choices button{width:100%;text-align:left;background:#3c3b70;color:#fff;font-size:clamp(.95rem,1.4vw,1.13rem)}
+.prototype-choices button:hover{background:#5553a2}
+.prototype-lab .showcase-hud{color:#9fffe6}
+.prototype-lab .showcase-play canvas{width:100%;height:auto;aspect-ratio:5/3}
