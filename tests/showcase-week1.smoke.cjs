@@ -23,6 +23,17 @@ const { chromium } = require('playwright');
     await page.locator('[data-restart]').click();
     await page.locator('#backToMapBtn').click();
   }
+  // Day 5 must be an actual prototype → observation → revision → retest.
+  await page.locator('[data-day="4"]').click();
+  await page.locator('[data-section="4"]').click();
+  await page.locator('[data-test]').click();
+  await page.waitForFunction(()=>document.querySelector('[data-choices]')?.hidden === false,{timeout:10000});
+  if(!(await page.locator('[data-reporttext]').innerText()).includes('OBSERVATION'))throw Error('Missing playtest observation');
+  await page.locator('[data-fix="clarity"]').click();
+  await page.locator('[data-test]').click();
+  await page.waitForFunction(()=>document.querySelector('[data-endtitle]')?.textContent?.includes('IMPROVED'),{timeout:10000});
+  await page.locator('[data-again]').click();
+  await page.locator('#backToMapBtn').click();
   await page.locator('[data-tab="all"]').click();
   await page.locator('[data-day="5"]').click();
   await page.locator('[data-section="4"]').click();
