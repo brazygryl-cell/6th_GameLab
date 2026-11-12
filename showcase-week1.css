@@ -42,3 +42,11 @@ body.presentation .showcase h3{font-size:2.4rem}
 .prototype-choices button:hover{background:#5553a2}
 .prototype-lab .showcase-hud{color:#9fffe6}
 .prototype-lab .showcase-play canvas{width:100%;height:auto;aspect-ratio:5/3}
+
+/* Code Caverns gameplay */
+.code-caverns{background:linear-gradient(160deg,#0d1732,#29204b);border-color:#78ecff;}
+.code-caverns .showcase-chip{background:#b8a5ff;color:#131328;}
+.code-caverns .showcase-hud{color:#9afce7;}
+.code-caverns .showcase-actions button{min-width:67px;touch-action:manipulation;}
+.code-caverns .showcase-actions [data-count]{font-size:clamp(.95rem,1.4vw,1.2rem);min-width:135px;background:#563f97;}
+.code-caverns .showcase-message{font-size:clamp(.9rem,1.5vw,1.14rem);}
