@@ -79,11 +79,122 @@ const LESSONS = [
     model:["Show a tiny paper level made from a player token, goal card, and hazard cards.","Explain only the rules—do not coach the player.","Record one observation instead of defending the design.","Change exactly one rule and run the test again."],
     say:"Your prototype is not your reputation. If it fails, it gave you information—and that means it worked.",
     game:{type:"prototype",title:"Prototype Pit Crew",instruction:"Run the first maze playtest, identify the locked-door confusion, choose ONE evidence-based revision, and test again.",purpose:"A prototype reveals confusing rules before a game is finished. Observe a failed playtest, revise one feature, and compare the results.",choices:["It was bad.","The player paused at the second rule and asked what “safe” meant.","I did not like the colors.","Make everything cooler."],correct:1,result:"This identifies where confusion happened and what caused it."},
+    codeBuild:{
+      title:"LEVEL UP: BUILD YOUR FIRST BROWSER GAME",
+      intro:"Turn today’s prototype into working code. Paste the starter into HTML Online Viewer, run it, then make the game yours.",
+      toolName:"OPEN HTML ONLINE VIEWER",
+      toolUrl:"https://html.onlineviewer.net/",
+      languages:[
+        {name:"HTML",role:"Builds the game pieces on the screen.",className:"html"},
+        {name:"CSS",role:"Designs the game world and visual feedback.",className:"css"},
+        {name:"JavaScript",role:"Controls clicks, movement, score, and winning.",className:"js"}
+      ],
+      steps:[
+        "Open HTML Online Viewer in a new tab.",
+        "Copy the complete starter code from this page.",
+        "Paste it into the editor and press Preview.",
+        "Play once before changing anything.",
+        "Customize at least three features, then let a partner playtest."
+      ],
+      customize:["Game title","Background colors","Target character","Winning score","Victory message"],
+      starter:`<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crystal Click Quest</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Arial, sans-serif;
+      color: white;
+      background: radial-gradient(circle at top, #5637a8, #11152f 70%);
+    }
+    .game {
+      width: min(680px, 90vw);
+      text-align: center;
+      padding: 24px;
+      border: 4px solid #62f5df;
+      border-radius: 24px;
+      background: #191d42;
+      box-shadow: 0 0 35px #62f5df66;
+    }
+    #arena {
+      position: relative;
+      height: 330px;
+      overflow: hidden;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #2b2160, #102b52);
+    }
+    #target {
+      position: absolute;
+      left: 45%;
+      top: 40%;
+      width: 76px;
+      height: 76px;
+      border: 0;
+      border-radius: 50%;
+      font-size: 42px;
+      cursor: pointer;
+      background: #ffd84a;
+      box-shadow: 0 0 22px #ffd84a;
+      transition: transform .15s;
+    }
+    #target:hover, #target:focus { transform: scale(1.14) rotate(8deg); }
+    #message { min-height: 30px; color: #62f5df; font-weight: 800; }
+  </style>
+</head>
+<body>
+  <main class="game">
+    <h1>CRYSTAL CLICK QUEST</h1>
+    <p>Catch the crystal 10 times before it escapes!</p>
+    <h2>Score: <span id="score">0</span> / <span id="goal">10</span></h2>
+    <p id="message" aria-live="polite">Click the crystal to begin.</p>
+    <section id="arena" aria-label="Game arena">
+      <button id="target" aria-label="Catch the crystal">💎</button>
+    </section>
+  </main>
+
+  <script>
+    let score = 0;
+    const winScore = 10;
+    const target = document.querySelector('#target');
+    const arena = document.querySelector('#arena');
+    const scoreText = document.querySelector('#score');
+    const goalText = document.querySelector('#goal');
+    const message = document.querySelector('#message');
+
+    goalText.textContent = winScore;
+
+    target.addEventListener('click', () => {
+      score = score + 1;
+      scoreText.textContent = score;
+
+      if (score >= winScore) {
+        message.textContent = 'YOU WIN! The crystal is yours!';
+        target.textContent = '🏆';
+        target.disabled = true;
+        return;
+      }
+
+      const maxX = arena.clientWidth - target.offsetWidth;
+      const maxY = arena.clientHeight - target.offsetHeight;
+      target.style.left = Math.random() * maxX + 'px';
+      target.style.top = Math.random() * maxY + 'px';
+      message.textContent = 'Great catch! Keep going.';
+    });
+  <\/script>
+</body>
+</html>`
+    },
     wedo:"Run a two-minute class playtest of a paper maze. Sort comments into evidence, opinion, and suggested change.",
-    youdo:"Create a playable paper version of your game. One partner plays while the designer stays quiet and records: one smooth moment, one confusing moment, and one possible revision.",lowTech:"This entire lesson is intentionally unplugged. Tokens can be paper scraps, coins, or pencil marks.",
+    youdo:"First, complete the paper playtest and record one useful observation. Then move to the Code Build below and create a working browser game. One partner plays while the designer watches silently and records one possible revision.",lowTech:"If a Chromebook or the online viewer is unavailable, complete a second paper iteration by changing one rule, testing again, and recording what improved.",
     cfu:{q:"Which action belongs in a strong playtest?",choices:["Explain every answer while the player plays","Change three rules during the same round","Watch where the player hesitates","Argue with negative feedback"],correct:2,explain:"Hesitation is observable evidence about clarity or difficulty."},
     exit:"What did your player do that taught you something you did not expect?",stem:"I noticed the player ___, so my next version will…",
-    materials:"Paper, pencils, scissors, index cards, small tokens; no Chromebook required.",teacher:"Protect the idea of productive failure. Celebrate the clearest observation, not the flashiest prototype.",lookFor:"Students separate observation from judgment and make one evidence-based revision."
+    materials:"Paper, pencils, small tokens, Chromebooks, projector, and HTML Online Viewer.",teacher:"Complete the paper playtest first, then model how one file can contain HTML, CSS, and JavaScript. Students should run the starter before customizing it.",lookFor:"Students can identify what each language controls, run the starter, customize three features, and make one evidence-based revision after playtesting."
   },
   {
     date:"MON • NOV 16",world:"code",topic:"Sprites Live on a Coordinate Grid",subtitle:"Position is information the computer can measure.",
@@ -438,3 +549,4 @@ const LESSONS = [
 ];
 
 window.GameLabData = {WORLDS, LESSONS, LESSON_SECTIONS};
+
