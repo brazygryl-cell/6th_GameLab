@@ -79,6 +79,7 @@ const LESSONS = [
     model:["Show a tiny paper level made from a player token, goal card, and hazard cards.","Explain only the rules—do not coach the player.","Record one observation instead of defending the design.","Change exactly one rule and run the test again."],
     say:"Your prototype is not your reputation. If it fails, it gave you information—and that means it worked.",
     game:{type:"prototype",title:"Prototype Pit Crew",instruction:"Run the first maze playtest, identify the locked-door confusion, choose ONE evidence-based revision, and test again.",purpose:"A prototype reveals confusing rules before a game is finished. Observe a failed playtest, revise one feature, and compare the results.",choices:["It was bad.","The player paused at the second rule and asked what “safe” meant.","I did not like the colors.","Make everything cooler."],correct:1,result:"This identifies where confusion happened and what caused it."},
+    hardGame:{type:"prototype-hard",title:"Prototype Pit Crew: Hard Maze",instruction:"Collect the key, avoid penalty tiles, and reach the locked exit in 22 moves and 35 seconds.",purpose:"This challenge combines route planning, constraints, feedback, and rapid iteration in one difficult playtest."},
     codeBuild:{
       title:"LEVEL UP: BUILD YOUR FIRST BROWSER GAME",
       intro:"Turn today’s prototype into working code. Paste the starter into HTML Online Viewer, run it, then make the game yours.",
