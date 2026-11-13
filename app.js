@@ -42,6 +42,12 @@
   function openLesson(i){lessonIndex=i;sectionIndex=0;applyWorld(currentLesson().world);renderLesson();showScreen('#lessonScreen');}
 
   const sectionTitles={bell:"Start with what you already notice.",mission:"Today’s mission has a reason.",vocab:"Use the language designers use.",model:"Watch the thinking—not just the clicks.",game:"Play the idea before you build it.",wedo:"Let’s reason through it together.",youdo:"Now make the idea yours.",cfu:"Show what you understand right now.",exit:"Name the learning before you leave."};
+  sectionTitles.hardgame="Now prove the prototype can survive hard mode.";
+  function lessonSections(lesson=currentLesson()){
+    if(!lesson.hardGame)return LESSON_SECTIONS;
+    const gameIndex=LESSON_SECTIONS.findIndex(section=>section.key==='game');
+    return [...LESSON_SECTIONS.slice(0,gameIndex+1),{key:"hardgame",label:"Hard Maze",icon:"☠"},...LESSON_SECTIONS.slice(gameIndex+1)];
+  }
   const escapeHTML=value=>String(value).replace(/[&<>]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[char]));
   function codeBuildHTML(build){
     if(!build)return '';
@@ -77,13 +83,13 @@
     return '';
   }
   function renderLesson(){
-    const l=currentLesson(),s=LESSON_SECTIONS[sectionIndex],w=worldFor(l.world);applyWorld(l.world);
+    const l=currentLesson(),sections=lessonSections(l),s=sections[sectionIndex],w=worldFor(l.world);applyWorld(l.world);
     $("#lessonDate").textContent=`DAY ${String(lessonIndex+1).padStart(2,'0')} • ${l.date} • ${w.name}`;$("#lessonTopic").textContent=l.topic;
-    $("#progressTrack").innerHTML=LESSON_SECTIONS.map((x,i)=>`<button class="progress-step ${i<sectionIndex?'complete':''} ${i===sectionIndex?'active':''}" data-section="${i}" aria-current="${i===sectionIndex?'step':'false'}"><span>${x.icon}</span>${x.label}</button>`).join('');
+    $("#progressTrack").innerHTML=sections.map((x,i)=>`<button class="progress-step ${i<sectionIndex?'complete':''} ${i===sectionIndex?'active':''}" data-section="${i}" aria-current="${i===sectionIndex?'step':'false'}"><span>${x.icon}</span>${x.label}</button>`).join('');
     $$("[data-section]").forEach(b=>b.addEventListener('click',()=>{sectionIndex=Number(b.dataset.section);renderLesson();}));
     $("#sectionLabel").textContent=`${s.icon} ${s.label.toUpperCase()}`;$("#lessonTitle").textContent=sectionTitles[s.key];$("#lessonContent").innerHTML=sectionHTML(s.key,l);
-    const gameMount=$("#gameMount");window.GameLabGames.reset();gameMount.hidden=s.key!=='game';if(s.key==='game')window.GameLabGames.render(l.game,gameMount,gameApi);
-    $("#prevSectionBtn").disabled=sectionIndex===0;$("#nextSectionBtn").textContent=sectionIndex===LESSON_SECTIONS.length-1?'COMPLETE DAY ✦':'NEXT →';$("#sectionCount").textContent=`${sectionIndex+1} / ${LESSON_SECTIONS.length}`;
+    const gameMount=$("#gameMount"),isGame=s.key==='game'||s.key==='hardgame';window.GameLabGames.reset();gameMount.hidden=!isGame;if(s.key==='game')window.GameLabGames.render(l.game,gameMount,gameApi);if(s.key==='hardgame')window.GameLabGames.render(l.hardGame,gameMount,gameApi);
+    $("#prevSectionBtn").disabled=sectionIndex===0;$("#nextSectionBtn").textContent=sectionIndex===sections.length-1?'COMPLETE DAY ✦':'NEXT →';$("#sectionCount").textContent=`${sectionIndex+1} / ${sections.length}`;
     $("#lessonStage").className=`lesson-stage section-${s.key}`;renderTeacher();wireCFU(l);wireCodeBuild(l);announce(`${s.label}: ${sectionTitles[s.key]}`);
   }
   function wireCFU(l){
@@ -105,7 +111,7 @@
       }
     });
   }
-  function nextSection(){if(sectionIndex<LESSON_SECTIONS.length-1){sectionIndex++;renderLesson();window.scrollTo({top:0,behavior:settings.reducedMotion?'auto':'smooth'});}else{celebrate();sound('success');openMap(currentLesson().world);}}
+  function nextSection(){const sections=lessonSections();if(sectionIndex<sections.length-1){sectionIndex++;renderLesson();window.scrollTo({top:0,behavior:settings.reducedMotion?'auto':'smooth'});}else{celebrate();sound('success');openMap(currentLesson().world);}}
   function prevSection(){if(sectionIndex>0){sectionIndex--;renderLesson();}}
 
   function renderTeacher(){
@@ -131,10 +137,10 @@
 
   function bind(){
     $("#homeBtn").addEventListener('click',()=>showScreen('#homeScreen'));$("#enterLabBtn").addEventListener('click',()=>openMap('all'));$("#todayBtn").addEventListener('click',()=>openLesson(todayIndex()));$("#mapHomeBtn").addEventListener('click',()=>showScreen('#homeScreen'));$("#backToMapBtn").addEventListener('click',()=>openMap(currentLesson().world));
-    $("#nextSectionBtn").addEventListener('click',nextSection);$("#prevSectionBtn").addEventListener('click',prevSection);$("#resetGameBtn").addEventListener('click',()=>{if(LESSON_SECTIONS[sectionIndex].key==='game')window.GameLabGames.render(currentLesson().game,$("#gameMount"),gameApi);});
+    $("#nextSectionBtn").addEventListener('click',nextSection);$("#prevSectionBtn").addEventListener('click',prevSection);$("#resetGameBtn").addEventListener('click',()=>{const key=lessonSections()[sectionIndex].key;if(key==='game')window.GameLabGames.render(currentLesson().game,$("#gameMount"),gameApi);if(key==='hardgame')window.GameLabGames.render(currentLesson().hardGame,$("#gameMount"),gameApi);});
     $("#teacherBtn").addEventListener('click',()=>openDrawer('#teacherDrawer'));$("#accessBtn").addEventListener('click',()=>openDrawer('#accessDrawer'));$("#presentBtn").addEventListener('click',togglePresentation);$("#drawerScrim").addEventListener('click',closeDrawers);$$('.close-drawer').forEach(b=>b.addEventListener('click',closeDrawers));$$('.toggle-control').forEach(b=>b.addEventListener('click',()=>toggleSetting(b.dataset.setting)));
     $("#timerBtn").addEventListener('click',openTimer);$("#timerCloseBtn").addEventListener('click',closeTimer);$("#timerStartBtn").addEventListener('click',()=>timerHandle?pauseTimer():startTimer());$("#timerResetBtn").addEventListener('click',resetTimer);$$('[data-minutes]').forEach(b=>b.addEventListener('click',()=>{timerInitial=timerSeconds=Number(b.dataset.minutes)*60;resetTimer();}));
-    document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select'))return;if(e.key==='Escape'){closeDrawers();closeTimer();}else if(e.key==='ArrowRight'&&$('#lessonScreen').classList.contains('active'))nextSection();else if(e.key==='ArrowLeft'&&$('#lessonScreen').classList.contains('active'))prevSection();else if(e.key.toLowerCase()==='t')openDrawer('#teacherDrawer');else if(e.key.toLowerCase()==='a')openDrawer('#accessDrawer');else if(e.key.toLowerCase()==='f')togglePresentation();else if(e.key.toLowerCase()==='r'&&LESSON_SECTIONS[sectionIndex].key==='game')window.GameLabGames.render(currentLesson().game,$("#gameMount"),gameApi);});
+    document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select'))return;if(e.key==='Escape'){closeDrawers();closeTimer();}else if(e.key==='ArrowRight'&&$('#lessonScreen').classList.contains('active'))nextSection();else if(e.key==='ArrowLeft'&&$('#lessonScreen').classList.contains('active'))prevSection();else if(e.key.toLowerCase()==='t')openDrawer('#teacherDrawer');else if(e.key.toLowerCase()==='a')openDrawer('#accessDrawer');else if(e.key.toLowerCase()==='f')togglePresentation();else if(e.key.toLowerCase()==='r'){const key=lessonSections()[sectionIndex].key;if(key==='game')window.GameLabGames.render(currentLesson().game,$("#gameMount"),gameApi);if(key==='hardgame')window.GameLabGames.render(currentLesson().hardGame,$("#gameMount"),gameApi);}});
     document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.body.classList.remove('presentation');});
   }
   function init(){renderWorldPreview();renderWorldTabs();renderMap();applySettings();applyWorld('arcade');renderTeacher();bind();renderTimer();}
