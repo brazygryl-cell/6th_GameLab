@@ -3,15 +3,16 @@
 "use strict";
 const previous=window.GameLabGames;
 let cleanup=null;
-function start(game,mount,api){
+function start(game,mount,api,hardOnly=false){
   let alive=true,raf=0,last=0,elapsed=0,playing=false,phase=0,stage="draft",revision=null,player={x:0,y:2},route=[],moveTick=0,trail=[],messageText="",mode="lesson",movesLeft=22,hardTime=35;
   const W=800,H=480,cols=8,rows=5,S=74,ox=93,oy=65,exit={x:7,y:2},key={x:5,y:1};
   const wallCells=new Set(["3,0","3,1","3,3","3,4","5,3","6,3"]);
   const hardWalls=new Set(["1,0","2,0","4,0","1,1","4,1","6,1","2,2","4,2","6,2","2,3","6,3","0,4","4,4"]);
   const hardHazards=new Set(["1,2","3,2","6,0"]);
   const safe=(s)=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  mount.innerHTML='<div class="showcase prototype-lab"><div class="showcase-top"><span class="showcase-chip">DAY 05 • DESIGNER PLAYTEST LAB</span><span class="showcase-hud" data-phase>BUILD 01 / TEST 01</span></div><h3>PROTOTYPE PIT CREW</h3><p class="showcase-sub">Build a test version. Watch someone play. Catch the confusing rule. Change ONE thing. Test again.</p><div class="showcase-play"><canvas width="800" height="480" tabindex="0" aria-label="Top-down neon maze prototype. Use arrow keys or directional buttons to move."></canvas><div class="showcase-overlay" hidden><strong data-endtitle></strong><p data-endmsg></p><button data-again>↻ TRY ANOTHER PLAYTEST</button><button data-end-lens>⌘ SHOW CODE LENS</button></div></div><div class="showcase-bottom"><div class="showcase-actions"><button data-move="up">▲</button><button data-move="left">◀</button><button data-move="down">▼</button><button data-move="right">▶</button></div><div class="showcase-tools"><button data-test>▶ RUN PLAYTEST</button><button data-hard>☠ HARD MAZE</button><button data-restart>↻ RESET</button><button data-togglelens>⌘ CODE LENS</button></div></div><div class="showcase-message" role="status" aria-live="polite" data-message>Challenge: Reach the exit. But is the prototype actually understandable?</div><div class="prototype-report" data-report><strong>DESIGNER NOTEBOOK</strong><p data-reporttext>Version 1: A player can move around the maze. Run a playtest before deciding whether the game works.</p><div class="prototype-choices" data-choices hidden><p><strong>Choose ONE revision to test:</strong></p><button data-fix="clarity">🔑 Add a visible key + explain the locked-door rule</button><button data-fix="colors">🎨 Make the walls brighter without changing the rule</button><button data-fix="hazards">⚠ Add more obstacles without explaining the door</button></div><p data-feedback aria-live="polite"></p></div><section class="showcase-lens" hidden><h4>🔍 CODE LENS — PROTOTYPE → OBSERVATION → ITERATION</h4><p>These snippets show the actual rules behind the playtest.</p><strong>HTML • THE INTERFACE</strong><pre>&lt;canvas aria-label="Maze prototype"&gt;&lt;/canvas&gt;</pre><strong>CSS • THE PLAYTEST FEEDBACK</strong><pre>.prototype-report { border-left: 6px solid #77f7da; }</pre><strong>JAVASCRIPT • THE REVISION CHANGES BEHAVIOR</strong><pre>if (revision === "clarity" &amp;&amp; hasKey) openGate();</pre><p><b>Ask:</b> What was your observation? What one thing did you change? What happened on the second test?</p></section></div>';
-  const canvas=mount.querySelector("canvas"),ctx=canvas.getContext("2d"),status=mount.querySelector("[data-message]"),report=mount.querySelector("[data-reporttext]"),choices=mount.querySelector("[data-choices]"),feedback=mount.querySelector("[data-feedback]"),phaseLabel=mount.querySelector("[data-phase]"),overlay=mount.querySelector(".showcase-overlay"),test=mount.querySelector("[data-test]"),hardBtn=mount.querySelector("[data-hard]");
+  mount.innerHTML='<div class="showcase prototype-lab"><div class="showcase-top"><span class="showcase-chip">DAY 05 • DESIGNER PLAYTEST LAB</span><span class="showcase-hud" data-phase>BUILD 01 / TEST 01</span></div><h3>PROTOTYPE PIT CREW</h3><p class="showcase-sub">Build a test version. Watch someone play. Catch the confusing rule. Change ONE thing. Test again.</p><div class="showcase-play"><canvas width="800" height="480" tabindex="0" aria-label="Top-down neon maze prototype. Use arrow keys or directional buttons to move."></canvas><div class="showcase-overlay" hidden><strong data-endtitle></strong><p data-endmsg></p><button data-again>↻ TRY ANOTHER PLAYTEST</button><button data-end-lens>⌘ SHOW CODE LENS</button></div></div><div class="showcase-bottom"><div class="showcase-actions"><button data-move="up">▲</button><button data-move="left">◀</button><button data-move="down">▼</button><button data-move="right">▶</button></div><div class="showcase-tools"><button data-test>▶ RUN PLAYTEST</button><button data-restart>↻ RESET</button><button data-togglelens>⌘ CODE LENS</button></div></div><div class="showcase-message" role="status" aria-live="polite" data-message>Challenge: Reach the exit. But is the prototype actually understandable?</div><div class="prototype-report" data-report><strong>DESIGNER NOTEBOOK</strong><p data-reporttext>Version 1: A player can move around the maze. Run a playtest before deciding whether the game works.</p><div class="prototype-choices" data-choices hidden><p><strong>Choose ONE revision to test:</strong></p><button data-fix="clarity">🔑 Add a visible key + explain the locked-door rule</button><button data-fix="colors">🎨 Make the walls brighter without changing the rule</button><button data-fix="hazards">⚠ Add more obstacles without explaining the door</button></div><p data-feedback aria-live="polite"></p></div><section class="showcase-lens" hidden><h4>🔍 CODE LENS — PROTOTYPE → OBSERVATION → ITERATION</h4><p>These snippets show the actual rules behind the playtest.</p><strong>HTML • THE INTERFACE</strong><pre>&lt;canvas aria-label="Maze prototype"&gt;&lt;/canvas&gt;</pre><strong>CSS • THE PLAYTEST FEEDBACK</strong><pre>.prototype-report { border-left: 6px solid #77f7da; }</pre><strong>JAVASCRIPT • THE REVISION CHANGES BEHAVIOR</strong><pre>if (revision === "clarity" &amp;&amp; hasKey) openGate();</pre><p><b>Ask:</b> What was your observation? What one thing did you change? What happened on the second test?</p></section></div>';
+  const canvas=mount.querySelector("canvas"),ctx=canvas.getContext("2d"),status=mount.querySelector("[data-message]"),report=mount.querySelector("[data-reporttext]"),choices=mount.querySelector("[data-choices]"),feedback=mount.querySelector("[data-feedback]"),phaseLabel=mount.querySelector("[data-phase]"),overlay=mount.querySelector(".showcase-overlay"),test=mount.querySelector("[data-test]");
+  if(hardOnly){mount.querySelector("h3").textContent="PROTOTYPE PIT CREW: HARD MAZE";mount.querySelector(".showcase-sub").textContent="No demonstration. No automatic route. Read the maze, manage your moves, and escape.";}
   let hasKey=false;
   function say(t){messageText=t;status.textContent=t;api.announce(t);}
   const cell=(x,y)=>({x:ox+x*S+S/2,y:oy+y*S+S/2});
@@ -25,6 +26,7 @@ function start(game,mount,api){
     overlay.hidden=true;choices.hidden=true;feedback.textContent="";phaseLabel.textContent="BUILD 01 / TEST 01";test.textContent="▶ RUN PLAYTEST";test.disabled=false;
     report.textContent="Version 1: A player can move around the maze. Run a playtest before deciding whether the game works.";
     say("Challenge: Reach the exit. But is the prototype actually understandable?");
+    if(hardOnly)startHard();
   }
   function finishHard(won,reason){
     stage=won?"won":"hardlost";playing=false;overlay.hidden=false;
@@ -97,7 +99,6 @@ function start(game,mount,api){
     report.textContent=notices[revision];say("One change made. Now retest the prototype and compare the outcome.");
   });
   test.addEventListener("click",runTest);
-  hardBtn.addEventListener("click",startHard);
   for(const b of mount.querySelectorAll("[data-move]"))b.addEventListener("click",()=>move(b.dataset.move));
   const keyDir={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",w:"up",a:"left",s:"down",d:"right"};
   function handleKey(e){if(!alive||!mount.contains(document.activeElement))return;const d=keyDir[e.key];if(d){e.preventDefault();e.stopImmediatePropagation();move(d);}}
@@ -147,7 +148,9 @@ function start(game,mount,api){
 }
 function render(game,mount,api){
   if(cleanup){cleanup();cleanup=null;}
-  if(game.title==="Prototype Pit Crew"){previous.reset();cleanup=start(game,mount,api);}else previous.render(game,mount,api);
+  if(game.title==="Prototype Pit Crew"){previous.reset();cleanup=start(game,mount,api,false);}
+  else if(game.title==="Prototype Pit Crew: Hard Maze"){previous.reset();cleanup=start(game,mount,api,true);}
+  else previous.render(game,mount,api);
 }
 function reset(){if(cleanup){cleanup();cleanup=null;}previous.reset();}
 window.GameLabGames={render,reset};
