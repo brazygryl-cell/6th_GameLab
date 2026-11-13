@@ -42,6 +42,28 @@
   function openLesson(i){lessonIndex=i;sectionIndex=0;applyWorld(currentLesson().world);renderLesson();showScreen('#lessonScreen');}
 
   const sectionTitles={bell:"Start with what you already notice.",mission:"Today’s mission has a reason.",vocab:"Use the language designers use.",model:"Watch the thinking—not just the clicks.",game:"Play the idea before you build it.",wedo:"Let’s reason through it together.",youdo:"Now make the idea yours.",cfu:"Show what you understand right now.",exit:"Name the learning before you leave."};
+  const escapeHTML=value=>String(value).replace(/[&<>]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[char]));
+  function codeBuildHTML(build){
+    if(!build)return '';
+    return `<section class="code-build-card" aria-labelledby="codeBuildTitle">
+      <div class="code-build-heading">
+        <span class="code-build-kicker">FROM PROTOTYPE → PLAYABLE CODE</span>
+        <h3 id="codeBuildTitle">${build.title}</h3>
+        <p>${build.intro}</p>
+      </div>
+      <div class="language-grid">${build.languages.map(language=>`<article class="language-card ${language.className}"><strong>${language.name}</strong><p>${language.role}</p></article>`).join('')}</div>
+      <div class="code-build-columns">
+        <div><h4>YOUR MISSION</h4><ol>${build.steps.map(step=>`<li>${step}</li>`).join('')}</ol></div>
+        <div><h4>MAKE IT YOURS</h4><ul>${build.customize.map(item=>`<li>${item}</li>`).join('')}</ul></div>
+      </div>
+      <div class="code-build-actions">
+        <a class="viewer-link" href="${build.toolUrl}" target="_blank" rel="noopener noreferrer">${build.toolName} ↗</a>
+        <button class="copy-code-btn" type="button" data-copy-code>COPY STARTER CODE</button>
+      </div>
+      <details class="starter-code"><summary>View the complete starter code</summary><pre><code>${escapeHTML(build.starter)}</code></pre></details>
+      <p class="playtest-callout"><strong>PARTNER PLAYTEST:</strong> Switch Chromebooks. The designer stays quiet while the partner plays. Record one success, one confusion, and one revision.</p>
+    </section>`;
+  }
   function sectionHTML(key,l){
     if(key==='bell')return `<div class="prompt-card"><p>${l.bell}</p><span class="sentence-stem">Write first. Then be ready to share the evidence behind your answer.</span></div>`;
     if(key==='mission')return `<div class="mission-card"><div><b>I CAN</b><p>${l.mission.replace(/^I can /i,'')}</p></div><div><b>WHY IT MATTERS</b><p>${l.purpose}</p></div></div>`;
@@ -49,7 +71,7 @@
     if(key==='model')return `<div class="model-card"><ol>${l.model.map(x=>`<li>${x}</li>`).join('')}</ol><div class="say-line">TEACHER THINK-ALOUD: “${l.say}”</div></div>`;
     if(key==='game')return '';
     if(key==='wedo')return `<div class="partner-strip"><div><strong>CLASS CHALLENGE</strong><p>${l.wedo}</p></div><div><strong>WATCH • TRY • EXPLAIN</strong><p>Watch one round. Try one decision. Explain what changed and why.</p></div></div>`;
-    if(key==='youdo')return `<div class="task-card"><p>${l.youdo}</p><div class="notebook-alt"><strong>NO CHROMEBOOK? STILL REAL WORK.</strong><br>${l.lowTech}</div></div>`;
+    if(key==='youdo')return `<div class="task-card"><p>${l.youdo}</p><div class="notebook-alt"><strong>NO CHROMEBOOK? STILL REAL WORK.</strong><br>${l.lowTech}</div></div>${codeBuildHTML(l.codeBuild)}`;
     if(key==='cfu')return `<div class="cfu-card"><p><strong>${l.cfu.q}</strong></p><div class="response-buttons">${l.cfu.choices.map((c,i)=>`<button data-cfu="${i}">${c}</button>`).join('')}</div><div class="reveal" data-cfu-reveal hidden></div></div>`;
     if(key==='exit')return `<div class="exit-card"><p><strong>${l.exit}</strong></p><span class="sentence-stem">${l.stem}</span></div>`;
     return '';
@@ -62,10 +84,26 @@
     $("#sectionLabel").textContent=`${s.icon} ${s.label.toUpperCase()}`;$("#lessonTitle").textContent=sectionTitles[s.key];$("#lessonContent").innerHTML=sectionHTML(s.key,l);
     const gameMount=$("#gameMount");window.GameLabGames.reset();gameMount.hidden=s.key!=='game';if(s.key==='game')window.GameLabGames.render(l.game,gameMount,gameApi);
     $("#prevSectionBtn").disabled=sectionIndex===0;$("#nextSectionBtn").textContent=sectionIndex===LESSON_SECTIONS.length-1?'COMPLETE DAY ✦':'NEXT →';$("#sectionCount").textContent=`${sectionIndex+1} / ${LESSON_SECTIONS.length}`;
-    $("#lessonStage").className=`lesson-stage section-${s.key}`;renderTeacher();wireCFU(l);announce(`${s.label}: ${sectionTitles[s.key]}`);
+    $("#lessonStage").className=`lesson-stage section-${s.key}`;renderTeacher();wireCFU(l);wireCodeBuild(l);announce(`${s.label}: ${sectionTitles[s.key]}`);
   }
   function wireCFU(l){
     $$("[data-cfu]").forEach(btn=>btn.addEventListener('click',()=>{const i=Number(btn.dataset.cfu),reveal=$("[data-cfu-reveal]");reveal.hidden=false;if(i===l.cfu.correct){reveal.textContent=`Yes. ${l.cfu.explain}`;sound('success');celebrate();}else{reveal.textContent='Not yet. Point to a word in the question that your choice does not fully address, then try again.';sound('error');}}));
+  }
+  function wireCodeBuild(l){
+    const button=$("[data-copy-code]");
+    if(!button||!l.codeBuild)return;
+    button.addEventListener('click',async()=>{
+      try{
+        await navigator.clipboard.writeText(l.codeBuild.starter);
+        button.textContent='COPIED! PASTE IT INTO THE VIEWER';
+        sound('success');announce('Starter game code copied.');
+      }catch(error){
+        const range=document.createRange();range.selectNode($(".starter-code code"));
+        const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
+        button.textContent='CODE SELECTED — PRESS CTRL + C';
+        announce('Starter code selected. Press Control C to copy.');
+      }
+    });
   }
   function nextSection(){if(sectionIndex<LESSON_SECTIONS.length-1){sectionIndex++;renderLesson();window.scrollTo({top:0,behavior:settings.reducedMotion?'auto':'smooth'});}else{celebrate();sound('success');openMap(currentLesson().world);}}
   function prevSection(){if(sectionIndex>0){sectionIndex--;renderLesson();}}
@@ -102,3 +140,4 @@
   function init(){renderWorldPreview();renderWorldTabs();renderMap();applySettings();applyWorld('arcade');renderTeacher();bind();renderTimer();}
   document.addEventListener('DOMContentLoaded',init);
 })();
+
