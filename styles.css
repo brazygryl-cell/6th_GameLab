@@ -67,4 +67,16 @@ body.presentation .topbar{display:none}body.presentation main{width:98vw;margin:
 .starter-code summary{padding:.85rem 1rem;font-weight:900;cursor:pointer;background:#ffd84a}
 .starter-code pre{max-height:360px;margin:0;padding:1rem;overflow:auto;color:#e9f4ff;background:#10142b;font-size:.78rem;line-height:1.45;white-space:pre}
 .playtest-callout{margin:1rem 1.5rem 1.5rem;padding:1rem;border:3px dashed #5c3bdb;border-radius:14px;background:#eee8ff;font-weight:750}
+.teacher-code-demo{margin-top:1.15rem;border:4px solid #17162d;border-radius:18px;overflow:hidden;background:#fff;box-shadow:6px 6px 0 #17162d}
+.teacher-code-demo summary{padding:1rem 1.2rem;cursor:pointer;color:#17162d;background:linear-gradient(90deg,#ffd84a,#ff9a62);font-weight:1000;letter-spacing:.035em;list-style:none}
+.teacher-code-demo summary::-webkit-details-marker{display:none}
+.teacher-code-demo details[open] summary{border-bottom:4px solid #17162d}
+.demo-code-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.15rem;color:#fff;background:#17162d}
+.demo-code-toolbar strong,.demo-code-toolbar span{display:block}.demo-code-toolbar strong{color:#62f5df;font-size:.8rem;letter-spacing:.09em}.demo-code-toolbar span{margin-top:.2rem;font-size:.76rem;font-weight:750}
+.demo-code-toolbar .copy-code-btn{flex:0 0 auto}
+.demo-language-chips{display:flex;gap:.55rem;flex-wrap:wrap;padding:.7rem 1.15rem;border-bottom:3px solid #17162d;background:#f5f1ff}
+.demo-language-chips span{padding:.25rem .55rem;border:2px solid #17162d;border-radius:8px;font-size:.75rem;font-weight:1000;box-shadow:2px 2px 0 #17162d}.demo-language-chips .html{background:#ff9a62}.demo-language-chips .css{background:#5ed9d0}.demo-language-chips .js{background:#ffd84a}
+.teacher-code-demo pre{max-height:420px;margin:0;padding:1.1rem;overflow:auto;color:#e9f4ff;background:#10142b;font:600 .74rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}
+.teacher-code-demo code{font:inherit}
 @media(max-width:760px){.language-grid,.code-build-columns{grid-template-columns:1fr}.language-card{border-right:0;border-bottom:3px solid #17162d}.language-card:last-child{border-bottom:0}.code-build-card{box-shadow:5px 5px 0 #17162d}}
+@media(max-width:760px){.demo-code-toolbar{align-items:stretch;flex-direction:column}.demo-code-toolbar .copy-code-btn{width:100%}.teacher-code-demo{box-shadow:4px 4px 0 #17162d}}
