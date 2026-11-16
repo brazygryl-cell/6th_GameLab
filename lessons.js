@@ -198,74 +198,113 @@ const LESSONS = [
     materials:"Paper, pencils, small tokens, Chromebooks, projector, and HTML Online Viewer.",teacher:"Complete the paper playtest first, then model how one file can contain HTML, CSS, and JavaScript. Students should run the starter before customizing it.",lookFor:"Students can identify what each language controls, run the starter, customize three features, and make one evidence-based revision after playtesting."
   },
   {
-    date:"MON • NOV 16",world:"code",topic:"Sprites Live on a Coordinate Grid",subtitle:"Position is information the computer can measure.",
-    bell:"If the center of a stage is (0,0), where would an object with a positive x-value and negative y-value appear? Explain without drawing first.",
-    mission:"I can use x- and y-coordinates to predict and control a sprite’s position.",purpose:"Coordinates let designers place objects precisely instead of dragging and hoping.",
-    vocab:[["Sprite","A programmable character or object."],["Coordinate","A number pair that identifies a position."],["x-axis","The horizontal left-to-right direction."],["y-axis","The vertical down-to-up direction."]],
-    model:["Place a sprite at (0,0) and identify the stage center.","Change only x and narrate horizontal movement.","Return to center, change only y, and narrate vertical movement.","Predict a coordinate before moving the sprite there."],
-    say:"Coordinates are not random numbers. They are directions the stage understands.",
-    game:{type:"coordinate",title:"Coordinate Comet",instruction:"Use arrow controls to fly to three glowing beacons. Read the target coordinate and track x and y as you move.",purpose:"The spacecraft moves on an x-y grid. Predicting coordinates, changing direction, and avoiding hazards make position meaningful.",targets:[[2,1],[-2,1],[1,-2]],grid:5},
-    wedo:"Use arms as axes. The class points left/right for x changes and up/down for y changes while one student predicts the quadrant.",
-    youdo:"Create a four-stop coordinate path in your notebook. Then, in Scratch if devices are available, program a sprite to visit the four positions in order.",lowTech:"Draw a coordinate grid on paper, label five positions, and move a paper sprite according to a partner’s coordinate commands.",
-    cfu:{q:"A sprite should move straight up without shifting sideways. Which value changes?",choices:["Only x","Only y","Both x and y","Neither"],correct:1,explain:"Vertical movement is controlled by the y-value."},
-    exit:"Explain how you can tell which coordinate controls horizontal movement.",stem:"The ___ coordinate controls horizontal movement because…",
-    materials:"Projector, notebooks, optional Chromebooks with Scratch.",teacher:"Have students predict first, then reveal. Treat wrong predictions as useful coordinate evidence.",lookFor:"Students consistently distinguish x from y and use signs meaningfully."
+    date:"MON • NOV 16",world:"code",topic:"HTML Builds the Game Screen",subtitle:"Before a game can move, its parts must exist on the page.",
+    bell:"A game needs a title, player, goal, instructions, and score display. Which pieces should be text, buttons, or containers? Explain one choice.",
+    mission:"I can use HTML to create game elements and CSS coordinates to place them.",purpose:"Browser games begin with organized elements that the code can identify, style, and control.",
+    vocab:[["HTML","The language that builds webpage structure."],["Element","A page part such as a heading, button, or game arena."],["CSS","The language that controls appearance and layout."],["Position","The location of an element inside its container."]],
+    model:["Create a game title with an h1 element.","Create an arena, player, and goal using elements with IDs.","Use CSS position: relative on the arena and position: absolute on game objects.","Change left and top values and predict where the player will appear."],
+    say:"HTML creates the pieces. CSS decides what those pieces look like and where they live.",
+    game:{type:"coordinate",title:"Coordinate Comet",instruction:"Use arrow controls to fly to three glowing beacons. Track how horizontal and vertical position change.",purpose:"The example turns CSS-style position values into visible movement.",targets:[[2,1],[-2,1],[1,-2]],grid:5},
+    codeBuild:{title:"BUILD 01: CREATE THE GAME WORLD",intro:"Paste the starter into HTML Online Viewer. Run it once, then change the arena, player, goal, and starting position.",toolName:"OPEN HTML ONLINE VIEWER",toolUrl:"https://html.onlineviewer.net/",languages:[{name:"HTML",role:"Creates the arena, player, goal, and controls.",className:"html"},{name:"CSS",role:"Places and designs every game element.",className:"css"},{name:"JavaScript",role:"Changes the player’s position when a button is pressed.",className:"js"}],steps:["Open the viewer.","Copy and paste the starter.","Press Preview.","Change one HTML element and two CSS rules.","Test the MOVE RIGHT button."],customize:["Game title","Arena colors","Player symbol","Goal symbol","Starting position"],starter:`<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><title>Game World</title><style>
+body{font-family:Arial;text-align:center;background:#10152f;color:white}.arena{position:relative;width:600px;height:330px;margin:auto;border:4px solid #62f5df;background:#25205c;overflow:hidden}.player,.goal{position:absolute;width:60px;height:60px;display:grid;place-items:center;font-size:40px}.player{left:30px;top:130px;background:#ff4f91;border-radius:50%}.goal{right:25px;top:130px}button{margin:18px;padding:12px 22px;font-weight:bold}
+</style></head><body><h1>CRYSTAL RUN</h1><p>Move the hero toward the crystal.</p><div class="arena"><div class="player" id="player">🚀</div><div class="goal">💎</div></div><button id="move">MOVE RIGHT</button><script>
+let x=30;const player=document.querySelector('#player');document.querySelector('#move').addEventListener('click',()=>{x=x+25;player.style.left=x+'px';});
+<\/script></body></html>`},
+    wedo:"Label the HTML, CSS, and JavaScript sections of the starter together. Predict the result before changing left, top, width, or height.",
+    youdo:"Complete Build 01 below. Your preview must show a titled arena, a player, a goal, instructions, and one working movement button.",lowTech:"Sketch the browser window, label each HTML element, and write the CSS position values beside the player and goal.",
+    cfu:{q:"Which language creates the player element on the page?",choices:["HTML","CSS","JavaScript","A browser tab"],correct:0,explain:"HTML creates the element; CSS styles it and JavaScript changes it."},
+    exit:"Explain one job completed by HTML and one completed by CSS today.",stem:"HTML created ___, while CSS…",
+    materials:"Chromebooks, projector, notebooks, and HTML Online Viewer.",teacher:"Type only the first few lines live, then use the complete starter. Keep pointing to the three language sections by name.",lookFor:"Students distinguish structure from style and successfully preview a complete file."
   },
   {
-    date:"TUE • NOV 17",world:"code",topic:"Events Start the Action",subtitle:"Code needs to know when to begin listening.",
-    bell:"Name three different events that could start an action in a game. Think beyond clicking the green flag.",
-    mission:"I can connect an event to the action it should trigger.",purpose:"Events turn a stack of instructions into a responsive system.",
-    vocab:[["Event","Something the program detects that starts code."],["Trigger","The specific event that activates a response."],["Event handler","Code that waits for and responds to an event."],["Broadcast","A message that tells other sprites an event occurred."]],
-    model:["Show movement blocks with no event and ask why nothing begins.","Attach a green-flag event and run it.","Replace it with a key-press event and compare behavior.","Broadcast START so two sprites respond to one message."],
-    say:"The code may be correct, but without an event it has no reason to wake up.",
-    game:{type:"sequence",title:"Event Relay: Skyline",instruction:"Cross the skyline, jump the laser, trigger a floor switch, then press ACTION to broadcast power to two towers.",purpose:"Jump, switch, and broadcast are distinct triggered events; without the event handler the towers remain dark.",items:["Sprite jumps","Player presses Space","Game listens for Space","Jump sound plays"],order:[1,2,0,3]},
-    wedo:"Students become sprites. The teacher calls a broadcast; only students assigned that message perform their action. Add a second broadcast and compare.",
-    youdo:"Write three event-response pairs for your game. Code at least one in Scratch: green flag, key press, sprite click, or broadcast.",lowTech:"Make event cards and response cards. Partners match them, then act out the program exactly.",
-    cfu:{q:"A sprite has move and say blocks but does nothing when the project starts. What should you inspect first?",choices:["Costume color","Event block","Sprite name","Backdrop art"],correct:1,explain:"The action stack needs an event that tells it when to run."},
-    exit:"How is an event different from the action that follows it?",stem:"An event ___, while an action…",
-    materials:"Notebooks, event cards, optional Scratch devices.",teacher:"Use classroom events—bell rings, hand raises, name called—to make triggers concrete.",lookFor:"Students state both the detected event and the resulting action."
+    date:"TUE • NOV 17",world:"code",topic:"JavaScript Events Make Games Respond",subtitle:"The game begins when the browser detects a player action.",
+    bell:"List three player actions a browser game could detect. What should the game do after each one?",
+    mission:"I can use JavaScript event listeners to connect player input to game actions.",purpose:"Events turn a designed screen into a responsive game.",
+    vocab:[["JavaScript","The language that controls webpage behavior."],["Event","An action the browser detects."],["Event listener","Code that waits for a specific event."],["Function","A group of instructions run when called."]],
+    model:["Select the player with document.querySelector.","Add a click event listener to a button.","Add a keydown event listener to the document.","Read event.key and connect Arrow keys to position changes."],
+    say:"The event is what happened. The function is what the game does because it happened.",
+    game:{type:"sequence",title:"Event Relay: Skyline",instruction:"Cross the skyline, jump the laser, trigger a switch, and power the towers.",purpose:"Each visible response begins with a specific input event.",items:["Player moves","ArrowRight is pressed","Browser detects keydown","Position value changes"],order:[1,2,3,0]},
+    codeBuild:{title:"BUILD 02: ADD PLAYER CONTROLS",intro:"Create keyboard and click controls. The player should visibly respond whenever the browser detects an input.",toolName:"OPEN HTML ONLINE VIEWER",toolUrl:"https://html.onlineviewer.net/",languages:[{name:"HTML",role:"Creates the arena and control button.",className:"html"},{name:"CSS",role:"Positions the player inside the arena.",className:"css"},{name:"JavaScript",role:"Listens for clicks and Arrow keys.",className:"js"}],steps:["Paste the starter.","Click BOOST.","Test all four Arrow keys.","Change the movement speed.","Add one new key response."],customize:["Player symbol","Movement speed","Key choice","Feedback message","Arena design"],starter:`<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><title>Event Driver</title><style>
+body{font-family:Arial;text-align:center;background:#0b1028;color:white}.arena{position:relative;width:600px;height:330px;margin:auto;border:4px solid #ffd84a;background:#17345d;overflow:hidden}.player{position:absolute;left:270px;top:135px;width:60px;height:60px;font-size:42px;transition:.08s}button{margin:15px;padding:12px 24px}
+</style></head><body><h1>EVENT DRIVER</h1><p id="message">Use the Arrow keys.</p><div class="arena"><div id="player" class="player">🛸</div></div><button id="boost">BOOST</button><script>
+const player=document.querySelector('#player');const message=document.querySelector('#message');let x=270;let y=135;const speed=20;
+function draw(){player.style.left=x+'px';player.style.top=y+'px';}
+document.addEventListener('keydown',(event)=>{if(event.key==='ArrowRight')x+=speed;if(event.key==='ArrowLeft')x-=speed;if(event.key==='ArrowUp')y-=speed;if(event.key==='ArrowDown')y+=speed;message.textContent='Detected: '+event.key;draw();});
+document.querySelector('#boost').addEventListener('click',()=>{x+=60;message.textContent='BOOST CLICKED!';draw();});
+<\/script></body></html>`},
+    wedo:"Trace one event from beginning to end: player presses ArrowRight → keydown is detected → x changes → draw updates the screen.",
+    youdo:"Complete Build 02 below. Your player must respond to four Arrow keys and one button click. Change at least one response.",lowTech:"Write five event-response pairs and trace each as INPUT → EVENT LISTENER → FUNCTION → OUTPUT.",
+    cfu:{q:"What does addEventListener do?",choices:["Designs the player","Waits for an event and runs code","Creates an HTML heading","Changes the background automatically"],correct:1,explain:"It connects a detected event to the function that should respond."},
+    exit:"Describe the difference between an event and the function that responds to it.",stem:"The event is ___; the function…",
+    materials:"Chromebooks, projector, notebooks, and HTML Online Viewer.",teacher:"Use the browser console only if available; the visible message gives students immediate evidence that an event was detected.",lookFor:"Students can identify the event, listener, function, and visible response."
   },
   {
-    date:"WED • NOV 18",world:"code",topic:"Loops: Make Repetition Work for You",subtitle:"When a pattern repeats, code should not have to repeat itself.",
-    bell:"Write “move 10 steps” six times. Now replace your six lines with one shorter instruction that means the same thing.",
-    mission:"I can use repeat and forever loops to control repeated behavior.",purpose:"Loops make code shorter, easier to change, and able to create continuous game behavior.",
-    vocab:[["Loop","Code that repeats a group of instructions."],["Iteration","One trip through a loop."],["Repeat","Run code a set number of times."],["Forever","Continue running code until the program stops."]],
-    model:["Build a dance using four copied move-turn pairs.","Replace the copies with a repeat 4 loop.","Change the repetition count and compare the result.","Use forever for a background animation, then discuss when forever would be unsafe."],
-    say:"A loop is a pattern with a decision: how long should this keep happening?",
-    game:{type:"loop",title:"Loop Lagoon: Robo Regatta",instruction:"Test REPEAT 2, REPEAT 4, and REPEAT 6. Watch each 110-pixel movement iteration and reach the lighthouse.",purpose:"A single loop body repeatedly moves the boat. Students change the iteration count and compare outcomes.",counts:[2,3,4,5],correct:4},
-    wedo:"Clap-stomp as the loop body. Students hold up fingers to choose the repeat count, then predict the total number of actions.",
-    youdo:"Identify one repeated behavior in your game. Write the loop body and decide whether it needs repeat, repeat until, or forever. Code it if devices are available.",lowTech:"Draw one loop bracket around repeated paper instructions and label the number of iterations.",
-    cfu:{q:"Which behavior is the best use of a forever loop?",choices:["Show the win screen once","Keep a sprite gently floating while the game runs","Add 10 points one time","Reset the level after losing"],correct:1,explain:"The floating behavior should continue throughout play."},
-    exit:"When would a forever loop create a problem in a game?",stem:"A forever loop would be a problem if…",
-    materials:"Notebooks, optional Scratch devices.",teacher:"Physically repeat the loop body and make students track iterations with fingers.",lookFor:"Students choose a loop based on intended duration, not just convenience."
+    date:"WED • NOV 18",world:"code",topic:"JavaScript Loops Build Repeating Game Parts",subtitle:"One loop can create an entire field of objects.",
+    bell:"A space game needs 20 stars. Would you write the same line 20 times? Explain a better instruction.",
+    mission:"I can use a JavaScript for loop to repeat game-building instructions.",purpose:"Loops reduce repeated code and make large game systems easier to change.",
+    vocab:[["Loop","Code that repeats instructions."],["Iteration","One pass through a loop."],["Counter","A variable that tracks loop progress."],["Array","A collection of values stored together."]],
+    model:["Write one line that creates a star.","Place the line inside a for loop.","Trace the counter from 0 through 11.","Change the loop limit and observe how many stars appear."],
+    say:"The computer does not see 'a bunch.' It needs a starting value, a stopping condition, and a change each time.",
+    game:{type:"loop",title:"Loop Lagoon: Robo Regatta",instruction:"Test different repetition counts and reach the lighthouse.",purpose:"The example makes iteration counts and repeated movement visible.",counts:[2,3,4,5],correct:4},
+    codeBuild:{title:"BUILD 03: CREATE WITH A LOOP",intro:"Use a for loop to generate the star field instead of typing the same HTML repeatedly.",toolName:"OPEN HTML ONLINE VIEWER",toolUrl:"https://html.onlineviewer.net/",languages:[{name:"HTML",role:"Provides the game sky container.",className:"html"},{name:"CSS",role:"Styles each generated star.",className:"css"},{name:"JavaScript",role:"Repeats the creation instructions.",className:"js"}],steps:["Preview 12 generated stars.","Find the loop counter.","Change 12 to 30.","Change the symbols or sizes.","Explain what one iteration creates."],customize:["Number of stars","Star symbol","Star color","Background","Loop limit"],starter:`<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><title>Loop Galaxy</title><style>
+body{margin:0;font-family:Arial;text-align:center;background:#090b24;color:white}.sky{position:relative;width:700px;height:390px;margin:auto;border:4px solid #a78bfa;background:linear-gradient(#10184b,#050718);overflow:hidden}.star{position:absolute;font-size:26px;filter:drop-shadow(0 0 7px #fff)}
+</style></head><body><h1>LOOP GALAXY</h1><p id="count"></p><div id="sky" class="sky"></div><script>
+const sky=document.querySelector('#sky');
+for (let i=0;i<12;i++){const star=document.createElement('span');star.className='star';star.textContent='✦';star.style.left=Math.random()*660+'px';star.style.top=Math.random()*350+'px';sky.appendChild(star);}
+document.querySelector('#count').textContent='The loop created '+sky.children.length+' stars.';
+<\/script></body></html>`},
+    wedo:"Trace the loop together using fingers for i = 0, 1, 2, and 3. After each iteration, name exactly what was created.",
+    youdo:"Complete Build 03 below. Change the loop limit and at least two properties of the objects it generates.",lowTech:"Draw a loop trace table with columns for i, condition true/false, and object created.",
+    cfu:{q:"In for (let i = 0; i < 12; i++), what stops the loop?",choices:["The color","i becomes 12","The browser closes","A player clicks"],correct:1,explain:"The loop continues only while i is less than 12."},
+    exit:"Explain what one iteration of today’s loop accomplishes.",stem:"During one iteration, the code…",
+    materials:"Chromebooks, projector, notebooks, and HTML Online Viewer.",teacher:"Change only the loop limit first so students can isolate cause and effect before customizing design.",lookFor:"Students identify initialization, condition, update, and repeated body."
   },
   {
-    date:"THU • NOV 19",world:"code",topic:"Conditionals Let Games Decide",subtitle:"A game becomes responsive when it can test what is true.",
-    bell:"Complete two sentences: IF it is raining, THEN ___. IF the player touches lava, THEN ___. What do both sentences have in common?",
-    mission:"I can use if/then logic to make a game respond to a condition.",purpose:"Conditionals allow one game to react differently depending on what the player does.",
-    vocab:[["Conditional","Code that runs only when a statement is true."],["Condition","A question the program can test as true or false."],["Boolean","A value that is either true or false."],["If/then","If a condition is true, then run an action."]],
-    model:["State the condition: touching the key?", "State the action: add key to inventory.","Run once when false and once when true.","Add an else action so the game responds in both cases."],
-    say:"The computer is not understanding the story. It is checking a very specific true-or-false question.",
-    game:{type:"conditional",title:"If/Then Dungeon",instruction:"Choose the action that should run for each dungeon condition.",purpose:"Conditionals connect a true/false test to the correct game response.",rounds:[{if:"IF touching the key",then:"add key",options:["add key","lose health","show credits"]},{if:"IF health = 0",then:"game over",options:["gain speed","game over","add key"]},{if:"IF score ≥ 10",then:"open gate",options:["open gate","hide player","reset score"]}]},
-    wedo:"Play Human Conditional: students stand only if a projected condition is true for them, then name the resulting action.",
-    youdo:"Write three condition-action pairs for your game. At least one must affect winning, losing, score, or access to a new area.",lowTech:"Use IF cards and THEN cards. Match them and explain how changing the condition changes the outcome.",
-    cfu:{q:"In “if touching the coin, then add 1 to score,” what is the condition?",choices:["Add 1","Score","Touching the coin","The sprite"],correct:2,explain:"Touching the coin is the true/false question being tested."},
-    exit:"Write one conditional in plain language for your game and label the condition and action.",stem:"IF ___ [condition], THEN ___ [action].",
-    materials:"Condition/action cards, notebooks, optional Scratch devices.",teacher:"Insist on testable conditions. “If the player is good” is not measurable; “if score ≥ 10” is.",lookFor:"Students distinguish the condition from the response."
+    date:"THU • NOV 19",world:"code",topic:"Conditionals Create Win and Lose Decisions",subtitle:"A game becomes a game when code can judge what happened.",
+    bell:"Write one true-or-false question a game could ask about score, lives, time, or position.",
+    mission:"I can use JavaScript if/else statements to create game decisions.",purpose:"Conditionals allow the same game to produce different outcomes based on player actions.",
+    vocab:[["Conditional","Code that runs only when a condition is true."],["Boolean","A true or false value."],["Comparison","A test using symbols such as >, <, or ===."],["Else","Code that runs when the condition is false."]],
+    model:["Create an energy variable.","Increase energy after a click.","Test if energy is greater than or equal to 5.","Show a win message when true and a progress message when false."],
+    say:"The computer is not guessing whether the player deserves to win. It is testing a precise true-or-false statement.",
+    game:{type:"conditional",title:"If/Then Dungeon",instruction:"Choose the correct response for each dungeon condition.",purpose:"The game connects a measurable condition to a different outcome.",rounds:[{if:"IF touching the key",then:"add key",options:["add key","lose health","show credits"]},{if:"IF health = 0",then:"game over",options:["gain speed","game over","add key"]},{if:"IF score ≥ 10",then:"open gate",options:["open gate","hide player","reset score"]}]},
+    codeBuild:{title:"BUILD 04: CODE THE WIN CONDITION",intro:"Give the player a goal, track progress, and use if/else to decide when the game has been won.",toolName:"OPEN HTML ONLINE VIEWER",toolUrl:"https://html.onlineviewer.net/",languages:[{name:"HTML",role:"Creates the power button and status display.",className:"html"},{name:"CSS",role:"Shows progress through color and scale.",className:"css"},{name:"JavaScript",role:"Tests the win condition with if/else.",className:"js"}],steps:["Collect energy.","Watch the condition remain false.","Reach five energy points.","Locate the if and else outcomes.","Change the winning number."],customize:["Winning number","Button label","Win message","Progress color","Reward symbol"],starter:`<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><title>Power Gate</title><style>
+body{font-family:Arial;text-align:center;background:#15123c;color:white}.panel{width:520px;margin:40px auto;padding:30px;border:4px solid #ff4f91;border-radius:22px;background:#24205b}button{padding:18px 30px;font-size:20px;font-weight:bold;background:#ffd84a;border:0;border-radius:12px}.won{background:#146c5c;box-shadow:0 0 30px #62f5df}
+</style></head><body><main id="panel" class="panel"><h1>POWER THE GATE</h1><h2>Energy: <span id="energy">0</span> / 5</h2><button id="charge">COLLECT ENERGY</button><p id="message">The gate is locked.</p></main><script>
+let energy=0;const panel=document.querySelector('#panel');const message=document.querySelector('#message');
+document.querySelector('#charge').addEventListener('click',()=>{energy++;document.querySelector('#energy').textContent=energy;if (energy>=5){message.textContent='GATE OPEN — YOU WIN!';panel.classList.add('won');}else{message.textContent='Need '+(5-energy)+' more energy.';}});
+<\/script></body></html>`},
+    wedo:"Read the conditional aloud as a class: IF energy is at least 5, THEN win; ELSE report how much energy remains.",
+    youdo:"Complete Build 04 below. Change the winning number, messages, and one visual response. Test both the false and true outcomes.",lowTech:"Write a trace table showing energy values 0–5 and whether the condition is true or false each time.",
+    cfu:{q:"In if (energy >= 5), what is the condition?",choices:["energy","5","energy is at least 5","show the win message"],correct:2,explain:"The comparison produces a true or false answer."},
+    exit:"Write the condition and the two possible outcomes in today’s game.",stem:"IF ___ is true, the game ___; ELSE…",
+    materials:"Chromebooks, projector, notebooks, and HTML Online Viewer.",teacher:"Require students to test the false outcome before winning so they see both branches.",lookFor:"Students distinguish the condition from the actions inside if and else."
   },
   {
-    date:"FRI • NOV 20",world:"code",topic:"Variables Remember What Changes",subtitle:"Games need memory for score, lives, time, and choices.",
-    bell:"What information does a game need to remember while you play? List at least four values that can change.",
-    mission:"I can create and update a variable to track changing information.",purpose:"Variables give a game memory, making progress and consequences possible.",
-    vocab:[["Variable","A named place that stores a value that can change."],["Value","The information currently stored."],["Initialize","Set a variable to its starting value."],["Update","Change a stored value during the program."]],
-    model:["Create a score variable and initialize it to 0 at the start.","Add 1 when the sprite collects a gem.","Show the difference between set score to 1 and change score by 1.","Use score in a win condition."],
-    say:"A variable is a labeled memory box. The label stays; what is inside can change.",
-    game:{type:"score",title:"Variable Vault",instruction:"Move your ship to catch ten falling gems while dodging glitches. Watch score and lives update after collisions.",purpose:"Variables store changing score and lives, and their values drive win and game-over conditions.",goal:6},
-    wedo:"The class becomes a variable. Start at zero; process a sequence of +1, +2, and -1 event cards while students show the current value with fingers.",
-    youdo:"Choose one variable for your game. Write its name, starting value, three events that update it, and one condition that checks it.",lowTech:"Keep a paper variable box. Cross out and replace the value each time a partner reads an event card.",
-    cfu:{q:"Which block should reset score when a new game begins?",choices:["change score by 1","set score to 0","say score","hide score"],correct:1,explain:"Initialization sets the stored value to its intended starting point."},
-    exit:"Explain the difference between setting a variable and changing a variable.",stem:"Setting replaces the value with ___, while changing…",
-    materials:"Notebooks, number/event cards, optional Scratch devices.",teacher:"Use the phrase label + current value repeatedly. Watch for students who confuse the variable name with its value.",lookFor:"Students initialize before updating and connect changes to events."
+    date:"FRI • NOV 20",world:"code",topic:"Variables Turn Code Into a Complete Game",subtitle:"Score, lives, and progress must be remembered and updated.",
+    bell:"What values must a game remember from the first move until the game ends? Name four and explain why one changes.",
+    mission:"I can combine variables, events, and conditionals to build a playable browser game.",purpose:"A complete game connects player input, changing values, feedback, and a clear ending.",
+    vocab:[["Variable","A named place that stores a changing value."],["Initialize","Set a variable’s starting value."],["Update","Change a stored value."],["Game state","The current condition of the game, such as playing, won, or lost."]],
+    model:["Initialize score and lives.","Update score when the gem is clicked.","Update lives when the danger button is clicked.","Use conditionals to switch the game state to won or lost."],
+    say:"The variable name stays the same. Its current value tells the game what should happen next.",
+    game:{type:"score",title:"Variable Vault",instruction:"Catch gems while dodging glitches. Watch score and lives update after every event.",purpose:"Variables store score and lives; conditionals use those values to end the game.",goal:6},
+    codeBuild:{title:"BUILD 05: COMPLETE YOUR MINI GAME",intro:"Combine the week’s code into a playable click game with score, lives, movement, feedback, and win/lose states.",toolName:"OPEN HTML ONLINE VIEWER",toolUrl:"https://html.onlineviewer.net/",languages:[{name:"HTML",role:"Creates the HUD, arena, gem, and danger control.",className:"html"},{name:"CSS",role:"Designs the arena and moving target.",className:"css"},{name:"JavaScript",role:"Controls events, variables, movement, and endings.",className:"js"}],steps:["Catch the gem.","Watch score update.","Test losing a life.","Reach the win condition.","Customize and partner-playtest."],customize:["Winning score","Starting lives","Gem character","Background","Win/lose messages"],starter:`<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><title>Gem Rush</title><style>
+body{font-family:Arial;text-align:center;background:#090d25;color:white}.hud{display:flex;justify-content:center;gap:50px;font-size:22px}.arena{position:relative;width:650px;height:350px;margin:15px auto;border:4px solid #62f5df;background:linear-gradient(135deg,#2b2160,#102b52);overflow:hidden}.gem{position:absolute;left:290px;top:135px;width:70px;height:70px;border:0;border-radius:50%;font-size:40px;background:#ffd84a;cursor:pointer}.danger{padding:10px 18px;background:#ff4f91;color:white;border:0;font-weight:bold}
+</style></head><body><h1>GEM RUSH</h1><div class="hud"><span>Score: <b id="score">0</b>/8</span><span>Lives: <b id="lives">3</b></span></div><p id="message">Catch the gem!</p><div id="arena" class="arena"><button id="gem" class="gem">💎</button></div><button id="danger" class="danger">TEST HAZARD</button><script>
+let score=0;let lives=3;let playing=true;const gem=document.querySelector('#gem');const arena=document.querySelector('#arena');const message=document.querySelector('#message');
+function update(){document.querySelector('#score').textContent=score;document.querySelector('#lives').textContent=lives;if(score>=8){playing=false;message.textContent='YOU WIN!';gem.textContent='🏆';}else if(lives<=0){playing=false;message.textContent='GAME OVER';gem.disabled=true;}}
+gem.addEventListener('click',()=>{if(!playing)return;score++;gem.style.left=Math.random()*(arena.clientWidth-70)+'px';gem.style.top=Math.random()*(arena.clientHeight-70)+'px';message.textContent='+1 POINT!';update();});
+document.querySelector('#danger').addEventListener('click',()=>{if(!playing)return;lives--;message.textContent='You lost a life!';update();});
+<\/script></body></html>`},
+    wedo:"Trace the game state after three events: catch gem, catch gem, hit hazard. Record the new score and lives after each event.",
+    youdo:"Complete Build 05 below. Customize at least four features, test the win and lose states, then give the game to a partner without explaining it.",lowTech:"Trace score, lives, event, condition result, and game state through eight paper test events.",
+    cfu:{q:"Which line creates the starting score?",choices:["score++","let score = 0","if (score >= 8)","textContent = score"],correct:1,explain:"Initialization creates the variable and gives it its starting value."},
+    exit:"Explain how an event, variable update, and conditional work together in your game.",stem:"When the player ___, the event runs ___, the variable becomes ___, and the condition…",
+    materials:"Chromebooks, projector, notebooks, and HTML Online Viewer.",teacher:"This is the first integrated build. Require a working starter before customization and a silent partner playtest before class ends.",lookFor:"Students can identify where score and lives initialize, update, display, and trigger endings."
   },
   {
     date:"MON • NOV 23",world:"bug",topic:"Debugging Is Detective Work",subtitle:"A bug is evidence about where your thinking and the computer’s behavior disagree.",
