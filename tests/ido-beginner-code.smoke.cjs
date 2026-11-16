@@ -46,4 +46,12 @@ if (!formatted.includes('body {\n') || !formatted.includes('  font-family: Arial
   throw new Error('CSS is not displayed with readable indentation.');
 }
 
+const styles = fs.readFileSync('styles.css', 'utf8');
+if (!styles.includes('font:600 1rem/1.55 ui-monospace')) {
+  throw new Error('Beginner code examples are too small for projection.');
+}
+if (!styles.includes('font:600 .95rem/1.65 ui-monospace')) {
+  throw new Error('Complete game code is too small for projection.');
+}
+
 console.log('PASS: I Do slides teach three beginner examples before readable complete game code.');
