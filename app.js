@@ -70,11 +70,28 @@
       <p class="playtest-callout"><strong>PARTNER PLAYTEST:</strong> Switch Chromebooks. The designer stays quiet while the partner plays. Record one success, one confusion, and one revision.</p>
     </section>`;
   }
+  function codeDemoHTML(build){
+    if(!build)return '';
+    return `<section class="teacher-code-demo" aria-label="Teacher code demonstration">
+      <details>
+        <summary>⌄ OPEN TODAY’S COMPLETE CODE</summary>
+        <div class="demo-code-toolbar">
+          <div>
+            <strong>READ IT IN LAYERS</strong>
+            <span>HTML first • CSS second • JavaScript last • Predict before running</span>
+          </div>
+          <button class="copy-code-btn" type="button" data-copy-code>COPY COMPLETE CODE</button>
+        </div>
+        <div class="demo-language-chips">${build.languages.map(language=>`<span class="${language.className}">${language.name}</span>`).join('')}</div>
+        <pre><code>${escapeHTML(build.starter)}</code></pre>
+      </details>
+    </section>`;
+  }
   function sectionHTML(key,l){
     if(key==='bell')return `<div class="prompt-card"><p>${l.bell}</p><span class="sentence-stem">Write first. Then be ready to share the evidence behind your answer.</span></div>`;
     if(key==='mission')return `<div class="mission-card"><div><b>I CAN</b><p>${l.mission.replace(/^I can /i,'')}</p></div><div><b>WHY IT MATTERS</b><p>${l.purpose}</p></div></div>`;
     if(key==='vocab')return `<div class="vocab-grid">${l.vocab.map(([term,def])=>`<div class="vocab-card"><strong>${term}</strong><span>${def}</span></div>`).join('')}</div><div class="notebook-alt"><strong>Notebook move:</strong> Rephrase each definition in your own words and add one example or non-example.</div>`;
-    if(key==='model')return `<div class="model-card"><ol>${l.model.map(x=>`<li>${x}</li>`).join('')}</ol><div class="say-line">TEACHER THINK-ALOUD: “${l.say}”</div></div>`;
+    if(key==='model')return `<div class="model-card"><ol>${l.model.map(x=>`<li>${x}</li>`).join('')}</ol><div class="say-line">TEACHER THINK-ALOUD: “${l.say}”</div></div>${codeDemoHTML(l.codeBuild)}`;
     if(key==='game')return '';
     if(key==='wedo')return `<div class="partner-strip"><div><strong>CLASS CHALLENGE</strong><p>${l.wedo}</p></div><div><strong>WATCH • TRY • EXPLAIN</strong><p>Watch one round. Try one decision. Explain what changed and why.</p></div></div>`;
     if(key==='youdo')return `<div class="task-card"><p>${l.youdo}</p><div class="notebook-alt"><strong>NO CHROMEBOOK? STILL REAL WORK.</strong><br>${l.lowTech}</div></div>${codeBuildHTML(l.codeBuild)}`;
@@ -104,7 +121,9 @@
         button.textContent='COPIED! PASTE IT INTO THE VIEWER';
         sound('success');announce('Starter game code copied.');
       }catch(error){
-        const range=document.createRange();range.selectNode($(".starter-code code"));
+        const code=button.closest('.teacher-code-demo,.code-build-card')?.querySelector('code');
+        if(!code)return;
+        const range=document.createRange();range.selectNode(code);
         const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
         button.textContent='CODE SELECTED — PRESS CTRL + C';
         announce('Starter code selected. Press Control C to copy.');
