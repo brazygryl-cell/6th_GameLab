@@ -49,6 +49,50 @@
     return [...LESSON_SECTIONS.slice(0,gameIndex+1),{key:"hardgame",label:"Hard Maze",icon:"☠"},...LESSON_SECTIONS.slice(gameIndex+1)];
   }
   const escapeHTML=value=>String(value).replace(/[&<>]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[char]));
+  function formatCSSForDisplay(source){
+    return source.trim().split('}').map(rule=>{
+      const open=rule.indexOf('{');
+      if(open<0)return rule.trim();
+      const selector=rule.slice(0,open).trim();
+      const declarations=rule.slice(open+1).split(';').map(item=>item.trim()).filter(Boolean);
+      return `${selector} {\n${declarations.map(item=>`  ${item.replace(/:\s*/,': ')};`).join('\n')}\n}`;
+    }).filter(Boolean).join('\n\n');
+  }
+  function formatJavaScriptForDisplay(source){
+    const lines=[];let current='',indent=0,quote='',escaped=false,parentheses=0;
+    const flush=()=>{const text=current.trim().replace(/^}else/,'} else');if(text)lines.push(`${'  '.repeat(indent)}${text}`);current='';};
+    for(let i=0;i<source.length;i++){
+      const char=source[i];
+      if(quote){current+=char;if(escaped){escaped=false;}else if(char==='\\'){escaped=true;}else if(char===quote){quote='';}continue;}
+      if(char==="'"||char==='"'||char==='`'){quote=char;current+=char;continue;}
+      if(char==='('){parentheses++;current+=char;continue;}
+      if(char===')'){parentheses=Math.max(0,parentheses-1);current+=char;continue;}
+      if(char==='{'){current=`${current.trimEnd()} {`;flush();indent++;continue;}
+      if(char==='}'){flush();indent=Math.max(0,indent-1);current='}';continue;}
+      if(char===';'){current+=';';if(parentheses===0)flush();continue;}
+      if(/\s/.test(char)){if(current&&!current.endsWith(' '))current+=' ';continue;}
+      current+=char;
+    }
+    flush();
+    return lines.join('\n');
+  }
+  function formatMarkupForDisplay(source){return source.trim().replace(/>\s*</g,'>\n<');}
+  function formatCodeForDisplay(source){
+    const styleOpen=source.indexOf('<style>'),styleClose=source.indexOf('</style>');
+    const scriptOpen=source.indexOf('<script>'),scriptClose=source.indexOf('</script>');
+    if(styleOpen<0||styleClose<0||scriptOpen<0||scriptClose<0)return formatMarkupForDisplay(source);
+    return [
+      formatMarkupForDisplay(source.slice(0,styleOpen)),
+      '<style>',
+      formatCSSForDisplay(source.slice(styleOpen+7,styleClose)),
+      '</style>',
+      formatMarkupForDisplay(source.slice(styleClose+8,scriptOpen)),
+      '<script>',
+      formatJavaScriptForDisplay(source.slice(scriptOpen+8,scriptClose)),
+      '</script>',
+      formatMarkupForDisplay(source.slice(scriptClose+9))
+    ].filter(Boolean).join('\n');
+  }
   function codeBuildHTML(build){
     if(!build)return '';
     return `<section class="code-build-card" aria-labelledby="codeBuildTitle">
@@ -72,18 +116,24 @@
   }
   function codeDemoHTML(build){
     if(!build)return '';
+    const examples=build.beginnerExamples||[
+      {label:'1. HTML: BUILD IT',explain:'HTML creates something the player can see or click.',code:'<h1>My First Game</h1>\n<button id="play">PLAY</button>',className:'html'},
+      {label:'2. CSS: STYLE IT',explain:'CSS changes how that piece looks.',code:'button {\n  background: purple;\n  color: white;\n}',className:'css'},
+      {label:'3. JAVASCRIPT: MAKE IT RESPOND',explain:'JavaScript tells the browser what to do after a click.',code:"document.querySelector('#play').addEventListener('click', () => {\n  alert('The button works!');\n});",className:'js'}
+    ];
     return `<section class="teacher-code-demo" aria-label="Teacher code demonstration">
       <details>
-        <summary>⌄ OPEN TODAY’S COMPLETE CODE</summary>
-        <div class="demo-code-toolbar">
-          <div>
-            <strong>READ IT IN LAYERS</strong>
-            <span>HTML first • CSS second • JavaScript last • Predict before running</span>
+        <summary>⌄ OPEN TODAY’S CODE LESSON</summary>
+        <div class="beginner-code-intro"><strong>START SMALL.</strong> Explain one box at a time. Students predict what it will do before you reveal the next box.</div>
+        <div class="beginner-code-grid">${examples.map(example=>`<article class="beginner-example-card ${example.className}"><div><h4>${example.label}</h4><p>${example.explain}</p></div><pre><code>${escapeHTML(example.code)}</code></pre></article>`).join('')}</div>
+        <details class="full-game-code">
+          <summary>4. READY? OPEN TODAY’S COMPLETE CODE</summary>
+          <div class="demo-code-toolbar">
+            <div><strong>READ IT IN LAYERS</strong><span>HTML first • CSS second • JavaScript last</span></div>
+            <button class="copy-code-btn" type="button" data-copy-code>COPY COMPLETE CODE</button>
           </div>
-          <button class="copy-code-btn" type="button" data-copy-code>COPY COMPLETE CODE</button>
-        </div>
-        <div class="demo-language-chips">${build.languages.map(language=>`<span class="${language.className}">${language.name}</span>`).join('')}</div>
-        <pre><code>${escapeHTML(build.starter)}</code></pre>
+          <pre><code>${escapeHTML(formatCodeForDisplay(build.starter))}</code></pre>
+        </details>
       </details>
     </section>`;
   }
@@ -121,7 +171,7 @@
         button.textContent='COPIED! PASTE IT INTO THE VIEWER';
         sound('success');announce('Starter game code copied.');
       }catch(error){
-        const code=button.closest('.teacher-code-demo,.code-build-card')?.querySelector('code');
+        const code=button.closest('.full-game-code,.code-build-card')?.querySelector('code');
         if(!code)return;
         const range=document.createRange();range.selectNode(code);
         const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
@@ -162,6 +212,7 @@
     document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select'))return;if(e.key==='Escape'){closeDrawers();closeTimer();}else if(e.key==='ArrowRight'&&$('#lessonScreen').classList.contains('active'))nextSection();else if(e.key==='ArrowLeft'&&$('#lessonScreen').classList.contains('active'))prevSection();else if(e.key.toLowerCase()==='t')openDrawer('#teacherDrawer');else if(e.key.toLowerCase()==='a')openDrawer('#accessDrawer');else if(e.key.toLowerCase()==='f')togglePresentation();else if(e.key.toLowerCase()==='r'){const key=lessonSections()[sectionIndex].key;if(key==='game')window.GameLabGames.render(currentLesson().game,$("#gameMount"),gameApi);if(key==='hardgame')window.GameLabGames.render(currentLesson().hardGame,$("#gameMount"),gameApi);}});
     document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.body.classList.remove('presentation');});
   }
+  window.GameLabCode={formatCodeForDisplay,codeDemoHTML};
   function init(){renderWorldPreview();renderWorldTabs();renderMap();applySettings();applyWorld('arcade');renderTeacher();bind();renderTimer();}
   document.addEventListener('DOMContentLoaded',init);
 })();
