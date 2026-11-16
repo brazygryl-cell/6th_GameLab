@@ -68,21 +68,21 @@ body.presentation .topbar{display:none}body.presentation main{width:98vw;margin:
 .starter-code pre{max-height:360px;margin:0;padding:1rem;overflow:auto;color:#e9f4ff;background:#10142b;font-size:.78rem;line-height:1.45;white-space:pre}
 .playtest-callout{margin:1rem 1.5rem 1.5rem;padding:1rem;border:3px dashed #5c3bdb;border-radius:14px;background:#eee8ff;font-weight:750}
 .teacher-code-demo{margin-top:1.15rem;border:4px solid #17162d;border-radius:18px;overflow:hidden;background:#fff;box-shadow:6px 6px 0 #17162d}
-.teacher-code-demo summary{padding:1rem 1.2rem;cursor:pointer;color:#17162d;background:linear-gradient(90deg,#ffd84a,#ff9a62);font-weight:1000;letter-spacing:.035em;list-style:none}
+.teacher-code-demo summary{padding:1rem 1.2rem;cursor:pointer;color:#17162d;background:linear-gradient(90deg,#ffd84a,#ff9a62);font-size:1.1rem;font-weight:1000;letter-spacing:.035em;list-style:none}
 .teacher-code-demo summary::-webkit-details-marker{display:none}
 .teacher-code-demo details[open] summary{border-bottom:4px solid #17162d}
-.beginner-code-intro{padding:1rem 1.2rem;border-bottom:3px solid #17162d;background:#f5f1ff;font-size:.88rem;line-height:1.4}.beginner-code-intro strong{color:#5c3bdb}
+.beginner-code-intro{padding:1rem 1.2rem;border-bottom:3px solid #17162d;background:#f5f1ff;font-size:1rem;line-height:1.5}.beginner-code-intro strong{color:#5c3bdb}
 .beginner-code-grid{display:grid;gap:.85rem;padding:1rem 1.2rem;background:#fff}
 .beginner-example-card{display:grid;grid-template-columns:minmax(210px,.65fr) minmax(0,1.35fr);gap:1rem;align-items:center;border:3px solid #17162d;border-radius:14px;overflow:hidden;background:#fff;box-shadow:4px 4px 0 #17162d}
-.beginner-example-card>div{align-self:stretch;padding:1rem;border-right:3px solid #17162d}.beginner-example-card h4{margin:0;font-size:.84rem;letter-spacing:.035em}.beginner-example-card p{margin:.45rem 0 0;font-size:.76rem;font-weight:750;line-height:1.35}.beginner-example-card.html>div{background:#ffb083}.beginner-example-card.css>div{background:#83eee6}.beginner-example-card.js>div{background:#ffe57e}
-.beginner-example-card pre{margin:0;padding:1rem;overflow:auto;color:#e9f4ff;background:#10142b;font:600 .72rem/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}
+.beginner-example-card>div{align-self:stretch;padding:1rem;border-right:3px solid #17162d}.beginner-example-card h4{margin:0;font-size:1.05rem;letter-spacing:.035em}.beginner-example-card p{margin:.45rem 0 0;font-size:.95rem;font-weight:750;line-height:1.45}.beginner-example-card.html>div{background:#ffb083}.beginner-example-card.css>div{background:#83eee6}.beginner-example-card.js>div{background:#ffe57e}
+.beginner-example-card pre{margin:0;padding:1.15rem;overflow:auto;color:#e9f4ff;background:#10142b;font:600 1rem/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}
 .full-game-code{margin:0 1.2rem 1.2rem;border:3px solid #17162d;border-radius:14px;overflow:hidden;background:#10142b}
 .full-game-code>summary{background:linear-gradient(90deg,#62f5df,#72c7ff)}
 .teacher-code-demo .full-game-code[open]>summary{border-bottom:3px solid #17162d}
 .demo-code-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.15rem;color:#fff;background:#17162d}
-.demo-code-toolbar strong,.demo-code-toolbar span{display:block}.demo-code-toolbar strong{color:#62f5df;font-size:.8rem;letter-spacing:.09em}.demo-code-toolbar span{margin-top:.2rem;font-size:.76rem;font-weight:750}
+.demo-code-toolbar strong,.demo-code-toolbar span{display:block}.demo-code-toolbar strong{color:#62f5df;font-size:.95rem;letter-spacing:.09em}.demo-code-toolbar span{margin-top:.2rem;font-size:.9rem;font-weight:750}
 .demo-code-toolbar .copy-code-btn{flex:0 0 auto}
-.full-game-code>pre{max-height:520px;margin:0;padding:1.2rem;overflow:auto;color:#e9f4ff;background:#10142b;font:600 .76rem/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}
+.full-game-code>pre{max-height:520px;margin:0;padding:1.25rem;overflow:auto;color:#e9f4ff;background:#10142b;font:600 .95rem/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}
 .teacher-code-demo code{font:inherit}
 @media(max-width:760px){.language-grid,.code-build-columns{grid-template-columns:1fr}.language-card{border-right:0;border-bottom:3px solid #17162d}.language-card:last-child{border-bottom:0}.code-build-card{box-shadow:5px 5px 0 #17162d}}
 @media(max-width:760px){.beginner-example-card{grid-template-columns:1fr}.beginner-example-card>div{border-right:0;border-bottom:3px solid #17162d}.demo-code-toolbar{align-items:stretch;flex-direction:column}.demo-code-toolbar .copy-code-btn{width:100%}.teacher-code-demo{box-shadow:4px 4px 0 #17162d}.full-game-code{margin:.8rem}}
